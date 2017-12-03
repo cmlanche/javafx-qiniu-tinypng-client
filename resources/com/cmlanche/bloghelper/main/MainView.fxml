@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.StackPane?>
+
+<?import java.net.URL?>
+<?import javafx.scene.layout.BorderPane?>
+<?import com.cmlanche.bloghelper.main.SiderBar?>
+<?import javafx.scene.control.ToolBar?>
+<StackPane fx:id="root" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.40">
+    <stylesheets>
+        <URL value="@MainView.css"/>
+    </stylesheets>
+
+    <BorderPane>
+        <!--顶部工具栏-->
+        <top>
+            <ToolBar fx:id="toolbar">
+            </ToolBar>
+        </top>
+
+        <!--左侧导航栏-->
+        <left>
+            <SiderBar fx:id="siderbar">
+            </SiderBar>
+        </left>
+    </BorderPane>
+</StackPane>

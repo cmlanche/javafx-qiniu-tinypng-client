@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.StackPane?>
+
+<?import java.net.URL?>
+<StackPane fx:id="root" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.40"
+           prefWidth="200">
+    <stylesheets>
+        <URL value="@SiderBar.css"/>
+    </stylesheets>
+</StackPane>
