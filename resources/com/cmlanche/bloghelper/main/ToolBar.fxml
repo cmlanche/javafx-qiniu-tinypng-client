@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.scene.layout.StackPane?>
-<?import java.net.URL?>
-<fx:root type="StackPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.40">
-    <stylesheets>
-        <URL value="@ToolBar.css"/>
-    </stylesheets>
-</fx:root>

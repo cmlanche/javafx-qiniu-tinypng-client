@@ -4,17 +4,18 @@ import com.fx.base.mvvm.DefaultView;
 
 /**
  * Created by cmlanche on 2017/12/3.
- * <p>
- * 导航栏
+ * 工具栏
  */
-public class SiderBar extends DefaultView {
+public class ToolBarView extends DefaultView {
 
-    public SiderBar() {
+    public ToolBarView() {
         loadAsRoot();
     }
 
     @Override
     protected void onViewCreated() {
         super.onViewCreated();
+
+        
     }
 }

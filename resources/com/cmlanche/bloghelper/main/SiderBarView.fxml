@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
+<fx:root type="StackPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.40"
+         prefWidth="200">
+    <stylesheets>
+        <URL value="@SiderBarView.css"/>
+    </stylesheets>
+
+    <BorderPane fx:id="main" prefWidth="120">
+        <center>
+            <VBox style="-fx-background-color: lightblue">
+                <ListView fx:id="listview">
+                </ListView>
+            </VBox>
+        </center>
+    </BorderPane>
+</fx:root>

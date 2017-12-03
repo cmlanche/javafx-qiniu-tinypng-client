@@ -20,7 +20,7 @@ public class Main extends Application {
         MvvmFX.setGlobalResourceBundle(resourceBundle);
 
         Parent parent = FXMLLoader.load(getClass().getResource("/com/cmlanche/bloghelper/main/MainView.fxml"));
-        Scene scene = new Scene(parent, 600, 400);
+        Scene scene = new Scene(parent, 1000, 618);
         primaryStage.setScene(scene);
         primaryStage.setTitle(resourceBundle.getString("app.title"));
         primaryStage.show();
