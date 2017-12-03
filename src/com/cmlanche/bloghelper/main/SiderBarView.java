@@ -1,9 +1,10 @@
 package com.cmlanche.bloghelper.main;
 
-import com.cmlanche.bloghelper.model.Bucket;
+import com.cmlanche.bloghelper.qiniu.ResManager;
 import com.fx.base.mvvm.DefaultView;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
+import org.apache.commons.lang3.StringUtils;
 
 
 /**
@@ -13,15 +14,48 @@ import javafx.scene.control.ListView;
  */
 public class SiderBarView extends DefaultView {
 
+    interface ItemSelectListener {
+        void onSelected(String bucket);
+    }
+
     @FXML
-    ListView<Bucket> listview;
+    ListView<String> listview;
+
+    private ItemSelectListener itemSelectListener;
 
     public SiderBarView() {
         loadAsRoot();
     }
 
     @Override
-    protected void onViewCreated() {
-        super.onViewCreated();
+    protected void init() {
+        String[] buckets = ResManager.getInstance().getBuckets();
+        listview.getItems().addAll(buckets);
+    }
+
+    @Override
+    protected void initView() {
+//        listview.setCellFactory(param -> new ListCell<String>() {
+//            @Override
+//            protected void updateItem(String item, boolean empty) {
+//                super.updateItem(item, empty);
+//                if (!empty) {
+//                    setText(item);
+//                } else {
+//                    setText("");
+//                }
+//            }
+//        });
+        listview.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (StringUtils.isNotEmpty(newValue)) {
+                if (this.itemSelectListener != null) {
+                    this.itemSelectListener.onSelected(newValue);
+                }
+            }
+        });
+    }
+
+    public void setItemSelectListener(ItemSelectListener itemSelectListener) {
+        this.itemSelectListener = itemSelectListener;
     }
 }

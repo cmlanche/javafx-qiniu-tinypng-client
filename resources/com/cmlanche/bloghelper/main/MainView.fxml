@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.cmlanche.bloghelper.main.ContentView?>
 <?import com.cmlanche.bloghelper.main.SiderBarView?>
 <?import com.cmlanche.bloghelper.main.ToolBarView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import java.net.URL?>
-<StackPane fx:id="root" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.40">
+<fx:root type="StackPane" fx:id="root" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.40">
     <stylesheets>
         <URL value="@MainView.css"/>
     </stylesheets>
@@ -13,14 +14,19 @@
     <BorderPane>
         <!--顶部工具栏-->
         <top>
-            <ToolBarView fx:id="toolbar">
+            <ToolBarView fx:id="toolBarView">
             </ToolBarView>
         </top>
 
         <!--左侧导航栏-->
         <left>
-            <SiderBarView fx:id="siderbar">
+            <SiderBarView fx:id="siderBarView">
             </SiderBarView>
         </left>
+
+        <center>
+            <ContentView fx:id="contentView">
+            </ContentView>
+        </center>
     </BorderPane>
-</StackPane>
+</fx:root>

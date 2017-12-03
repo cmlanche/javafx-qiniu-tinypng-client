@@ -13,9 +13,12 @@ public class ToolBarView extends DefaultView {
     }
 
     @Override
-    protected void onViewCreated() {
-        super.onViewCreated();
+    protected void init() {
 
-        
+    }
+
+    @Override
+    protected void initView() {
+
     }
 }

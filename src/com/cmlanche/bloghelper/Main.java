@@ -1,9 +1,8 @@
 package com.cmlanche.bloghelper;
 
+import com.cmlanche.bloghelper.main.MainView;
 import com.fx.mvvm.MvvmFX;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -19,8 +18,7 @@ public class Main extends Application {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("i18n");
         MvvmFX.setGlobalResourceBundle(resourceBundle);
 
-        Parent parent = FXMLLoader.load(getClass().getResource("/com/cmlanche/bloghelper/main/MainView.fxml"));
-        Scene scene = new Scene(parent, 1000, 618);
+        Scene scene = new Scene(new MainView(), 1000, 618);
         primaryStage.setScene(scene);
         primaryStage.setTitle(resourceBundle.getString("app.title"));
         primaryStage.show();
