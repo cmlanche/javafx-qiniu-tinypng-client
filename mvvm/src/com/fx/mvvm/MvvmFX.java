@@ -64,4 +64,8 @@ public class MvvmFX {
 	public static void setGlobalResourceBundle(ResourceBundle resourceBundle) {
 		ResourceBundleManager.getInstance().setGlobalResourceBundle(resourceBundle);
 	}
+
+	public static ResourceBundle getGlobalResourceBundle() {
+		return ResourceBundleManager.getInstance().getGlobalResourceBundle();
+	}
 }

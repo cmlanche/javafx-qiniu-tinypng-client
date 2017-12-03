@@ -7,7 +7,7 @@ import com.fx.mvvm.ViewModel;
 import com.fx.mvvm.ViewTuple;
 import javafx.application.Platform;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
  *
  * 界面的逻辑（基类）
  */
-public abstract class BaseView<VM extends ViewModel> extends Pane implements Initializable, FxmlView<VM> {
+public abstract class BaseView<VM extends ViewModel> extends StackPane implements Initializable, FxmlView<VM> {
 
     protected URL location;
     protected ResourceBundle resources;
