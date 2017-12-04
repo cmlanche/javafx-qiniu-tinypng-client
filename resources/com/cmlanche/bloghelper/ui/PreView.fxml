@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<?import java.net.URL?>
+<fx:root type="StackPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.40"
+         prefHeight="200" style="-fx-background-color: grey">
+    <stylesheets>
+        <URL value="@PreView.css"/>
+    </stylesheets>
+
+    <ImageView fx:id="imageView" preserveRatio="true" fitHeight="200">
+    </ImageView>
+
+</fx:root>

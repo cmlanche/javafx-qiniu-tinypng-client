@@ -1,4 +1,4 @@
-package com.cmlanche.bloghelper.main;
+package com.cmlanche.bloghelper.ui;
 
 import com.fx.base.mvvm.DefaultView;
 

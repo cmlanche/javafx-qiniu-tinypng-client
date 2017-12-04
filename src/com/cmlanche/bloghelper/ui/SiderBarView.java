@@ -1,5 +1,6 @@
-package com.cmlanche.bloghelper.main;
+package com.cmlanche.bloghelper.ui;
 
+import com.cmlanche.bloghelper.listeners.ItemSelectListener;
 import com.cmlanche.bloghelper.qiniu.ResManager;
 import com.fx.base.mvvm.DefaultView;
 import javafx.fxml.FXML;
@@ -14,14 +15,10 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class SiderBarView extends DefaultView {
 
-    interface ItemSelectListener {
-        void onSelected(String bucket);
-    }
-
     @FXML
     ListView<String> listview;
 
-    private ItemSelectListener itemSelectListener;
+    private ItemSelectListener<String> itemSelectListener;
 
     public SiderBarView() {
         loadAsRoot();
@@ -49,13 +46,13 @@ public class SiderBarView extends DefaultView {
         listview.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (StringUtils.isNotEmpty(newValue)) {
                 if (this.itemSelectListener != null) {
-                    this.itemSelectListener.onSelected(newValue);
+                    this.itemSelectListener.onItemSelected(newValue);
                 }
             }
         });
     }
 
-    public void setItemSelectListener(ItemSelectListener itemSelectListener) {
+    public void setOnItemSelectedListener(ItemSelectListener<String> itemSelectListener) {
         this.itemSelectListener = itemSelectListener;
     }
 }

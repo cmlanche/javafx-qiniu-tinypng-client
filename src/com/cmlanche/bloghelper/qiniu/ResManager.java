@@ -74,7 +74,29 @@ public class ResManager {
         return null;
     }
 
+    /**
+     * 获取某个bucket的所有文件
+     *
+     * @param bucket
+     * @param limit
+     * @return
+     */
     public FileListing getFiles(String bucket, int limit) {
         return getFiles(bucket, "", limit);
+    }
+
+    /**
+     * 获取某个bucket的域名列表
+     *
+     * @param bucket
+     * @return
+     */
+    public String[] getDomains(String bucket) {
+        try {
+            return bucketManager.domainList(bucket);
+        } catch (QiniuException e) {
+            Logger.error(tag, e.getMessage(), e);
+        }
+        return null;
     }
 }

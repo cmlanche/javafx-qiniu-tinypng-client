@@ -1,6 +1,6 @@
 package com.cmlanche.bloghelper;
 
-import com.cmlanche.bloghelper.main.MainView;
+import com.cmlanche.bloghelper.ui.MainView;
 import com.fx.mvvm.MvvmFX;
 import javafx.application.Application;
 import javafx.scene.Scene;

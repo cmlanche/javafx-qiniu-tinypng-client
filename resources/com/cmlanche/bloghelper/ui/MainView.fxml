@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.cmlanche.bloghelper.main.ContentView?>
-<?import com.cmlanche.bloghelper.main.SiderBarView?>
-<?import com.cmlanche.bloghelper.main.ToolBarView?>
+<?import com.cmlanche.bloghelper.ui.ContentView?>
+<?import com.cmlanche.bloghelper.ui.PreView?>
+<?import com.cmlanche.bloghelper.ui.SiderBarView?>
+<?import com.cmlanche.bloghelper.ui.ToolBarView?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import java.net.URL?>
@@ -25,8 +27,15 @@
         </left>
 
         <center>
-            <ContentView fx:id="contentView">
-            </ContentView>
+            <SplitPane orientation="VERTICAL">
+                <items>
+                    <ContentView fx:id="contentView">
+                    </ContentView>
+                    <PreView fx:id="preView">
+                    </PreView>
+                </items>
+            </SplitPane>
+
         </center>
     </BorderPane>
 </fx:root>

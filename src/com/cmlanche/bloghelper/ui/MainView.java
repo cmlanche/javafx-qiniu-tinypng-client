@@ -1,4 +1,4 @@
-package com.cmlanche.bloghelper.main;
+package com.cmlanche.bloghelper.ui;
 
 import com.fx.base.mvvm.DefaultView;
 import javafx.fxml.FXML;
@@ -15,6 +15,8 @@ public class MainView extends DefaultView {
     ToolBarView toolBarView;
     @FXML
     ContentView contentView;
+    @FXML
+    PreView preView;
 
     public MainView() {
         loadAsRoot();
@@ -27,6 +29,7 @@ public class MainView extends DefaultView {
 
     @Override
     protected void initView() {
-        siderBarView.setItemSelectListener(bucket -> contentView.loadBucket(bucket));
+        siderBarView.setOnItemSelectedListener(contentView::loadBucket);
+        contentView.setOnItemSelectedListener(preView::loadFile);
     }
 }

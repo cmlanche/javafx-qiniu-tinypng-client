@@ -1,6 +1,7 @@
-package com.cmlanche.bloghelper.main;
+package com.cmlanche.bloghelper.ui;
 
 import com.cmlanche.bloghelper.common.Config;
+import com.cmlanche.bloghelper.listeners.ItemSelectListener;
 import com.cmlanche.bloghelper.model.BucketFile;
 import com.cmlanche.bloghelper.qiniu.ResManager;
 import com.fx.base.mvvm.DefaultView;
@@ -19,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 public class ContentView extends DefaultView {
 
     private String bucket;
+    private ItemSelectListener<BucketFile> selectListener;
 
     @FXML
     TableView<BucketFile> tableView;
@@ -63,17 +65,31 @@ public class ContentView extends DefaultView {
         mineTypeColumn.setCellValueFactory(new PropertyValueFactory<>("mineType"));
         sizeColumn.setCellValueFactory(new PropertyValueFactory<>("size"));
         updateTimeColumn.setCellValueFactory(new PropertyValueFactory<>("updateTime"));
+
+        tableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                if (this.selectListener != null) {
+                    this.selectListener.onItemSelected(newValue);
+                }
+            }
+        });
+    }
+
+    public void setOnItemSelectedListener(ItemSelectListener<BucketFile> listener) {
+        this.selectListener = listener;
     }
 
     private void loadFileListing(FileListing fileListing) {
         tableView.getItems().clear();
         if (fileListing != null && fileListing.items.length > 0) {
+            String[] domains = ResManager.getInstance().getDomains(bucket);
             for (FileInfo item : fileListing.items) {
                 BucketFile bf = new BucketFile();
                 bf.setName(item.key);
                 bf.setMineType(item.mimeType);
                 bf.setSize(String.valueOf(item.fsize));
                 bf.setUpdateTime(String.valueOf(item.putTime));
+                bf.setUrl("http://" + domains[1] + "/" + item.key);
                 tableView.getItems().add(bf);
             }
         }

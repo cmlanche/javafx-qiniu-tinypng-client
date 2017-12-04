@@ -25,6 +25,11 @@ public class BucketFile {
      */
     private String updateTime;
 
+    /**
+     * 文件url地址
+     */
+    private String url;
+
     public String getName() {
         return name;
     }
@@ -55,5 +60,13 @@ public class BucketFile {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
