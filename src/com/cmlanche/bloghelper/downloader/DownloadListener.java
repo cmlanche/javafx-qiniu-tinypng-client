@@ -11,7 +11,7 @@ public interface DownloadListener {
 
     void onProgress(int progress);
 
-    void onFinished(byte[] bytes, String path);
+    void onFinished(String path);
 
     void onError(String error);
 }

@@ -70,14 +70,14 @@ public class FileDownloader {
                     byte[] bytes = rb.bytes();
                     if (bytes != null) {
                         fos.write(bytes);
-                        listener.onFinished(bytes, filePath);
+                        fos.close();
+                        listener.onFinished(filePath);
                     } else {
                         Logger.error(tag, "the bytes of body is null");
                     }
                 } else {
                     Logger.error(tag, "the body of response is null");
                 }
-                fos.close();
                 Logger.info(tag, "downloaded:" + filePath);
             } catch (IOException e) {
                 Logger.error(tag, e.getMessage(), e);
