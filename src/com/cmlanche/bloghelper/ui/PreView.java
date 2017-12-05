@@ -1,7 +1,7 @@
 package com.cmlanche.bloghelper.ui;
 
 import com.cmlanche.bloghelper.model.BucketFile;
-import com.fx.base.mvvm.DefaultView;
+import com.fx.base.mvvm.CustomView;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,16 +17,12 @@ import java.io.InputStream;
  * Created by cmlanche on 2017/12/4.
  * 图片预览界面
  */
-public class PreView extends DefaultView {
+public class PreView extends CustomView {
 
     @FXML
     ImageView imageView;
 
     private BucketFile bucketFile;
-
-    public PreView() {
-        loadAsRoot();
-    }
 
     @Override
     protected void init() {

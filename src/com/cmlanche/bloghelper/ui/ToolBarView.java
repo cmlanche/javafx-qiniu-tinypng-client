@@ -1,16 +1,12 @@
 package com.cmlanche.bloghelper.ui;
 
-import com.fx.base.mvvm.DefaultView;
+import com.fx.base.mvvm.CustomView;
 
 /**
  * Created by cmlanche on 2017/12/3.
  * 工具栏
  */
-public class ToolBarView extends DefaultView {
-
-    public ToolBarView() {
-        loadAsRoot();
-    }
+public class ToolBarView extends CustomView {
 
     @Override
     protected void init() {

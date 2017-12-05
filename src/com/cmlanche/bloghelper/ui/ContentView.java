@@ -4,7 +4,7 @@ import com.cmlanche.bloghelper.common.Config;
 import com.cmlanche.bloghelper.listeners.ItemSelectListener;
 import com.cmlanche.bloghelper.model.BucketFile;
 import com.cmlanche.bloghelper.qiniu.ResManager;
-import com.fx.base.mvvm.DefaultView;
+import com.fx.base.mvvm.CustomView;
 import com.qiniu.storage.model.FileInfo;
 import com.qiniu.storage.model.FileListing;
 import javafx.fxml.FXML;
@@ -17,7 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Created by cmlanche on 2017/12/3.
  */
-public class ContentView extends DefaultView {
+public class ContentView extends CustomView {
 
     private String bucket;
     private ItemSelectListener<BucketFile> selectListener;
@@ -36,10 +36,6 @@ public class ContentView extends DefaultView {
     TableColumn<BucketFile, Long> updateTimeColumn;
     @FXML
     TableColumn<BucketFile, String> operationColumn;
-
-    public ContentView() {
-        loadAsRoot();
-    }
 
     @Override
     public void init() {

@@ -2,7 +2,7 @@ package com.cmlanche.bloghelper.ui;
 
 import com.cmlanche.bloghelper.listeners.ItemSelectListener;
 import com.cmlanche.bloghelper.qiniu.ResManager;
-import com.fx.base.mvvm.DefaultView;
+import com.fx.base.mvvm.CustomView;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import org.apache.commons.lang3.StringUtils;
@@ -13,16 +13,12 @@ import org.apache.commons.lang3.StringUtils;
  * <p>
  * 导航栏
  */
-public class SiderBarView extends DefaultView {
+public class SiderBarView extends CustomView {
 
     @FXML
     ListView<String> listview;
 
     private ItemSelectListener<String> itemSelectListener;
-
-    public SiderBarView() {
-        loadAsRoot();
-    }
 
     @Override
     protected void init() {

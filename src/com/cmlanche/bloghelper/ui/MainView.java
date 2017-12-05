@@ -1,13 +1,13 @@
 package com.cmlanche.bloghelper.ui;
 
-import com.fx.base.mvvm.DefaultView;
+import com.fx.base.mvvm.CustomView;
 import javafx.fxml.FXML;
 
 /**
  * Created by cmlanche on 2017/12/3.
  * 主view
  */
-public class MainView extends DefaultView {
+public class MainView extends CustomView {
 
     @FXML
     SiderBarView siderBarView;
@@ -17,10 +17,6 @@ public class MainView extends DefaultView {
     ContentView contentView;
     @FXML
     PreView preView;
-
-    public MainView() {
-        loadAsRoot();
-    }
 
     @Override
     protected void init() {
