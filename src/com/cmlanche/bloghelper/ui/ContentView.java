@@ -82,6 +82,7 @@ public class ContentView extends CustomView {
             for (FileInfo item : fileListing.items) {
                 BucketFile bf = new BucketFile();
                 bf.setName(item.key);
+                bf.setBucket(bucket);
                 bf.setMineType(item.mimeType);
                 bf.setSize(String.valueOf(item.fsize));
                 bf.setUpdateTime(String.valueOf(item.putTime));

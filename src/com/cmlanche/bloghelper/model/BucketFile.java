@@ -5,6 +5,8 @@ package com.cmlanche.bloghelper.model;
  */
 public class BucketFile {
 
+    private String bucket;
+
     /**
      * 文件名称
      */
@@ -29,6 +31,14 @@ public class BucketFile {
      * 文件url地址
      */
     private String url;
+
+    public String getBucket() {
+        return bucket;
+    }
+
+    public void setBucket(String bucket) {
+        this.bucket = bucket;
+    }
 
     public String getName() {
         return name;
