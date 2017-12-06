@@ -3,7 +3,7 @@ package com.cmlanche.bloghelper.ui;
 import com.cmlanche.bloghelper.common.Config;
 import com.cmlanche.bloghelper.listeners.ItemSelectListener;
 import com.cmlanche.bloghelper.model.BucketFile;
-import com.cmlanche.bloghelper.qiniu.ResManager;
+import com.cmlanche.bloghelper.qiniu.QiniuManager;
 import com.fx.base.mvvm.CustomView;
 import com.qiniu.storage.model.FileInfo;
 import com.qiniu.storage.model.FileListing;
@@ -78,7 +78,7 @@ public class ContentView extends CustomView {
     private void loadFileListing(FileListing fileListing) {
         tableView.getItems().clear();
         if (fileListing != null && fileListing.items.length > 0) {
-            String[] domains = ResManager.getInstance().getDomains(bucket);
+            String[] domains = QiniuManager.getInstance().getDomains(bucket);
             for (FileInfo item : fileListing.items) {
                 BucketFile bf = new BucketFile();
                 bf.setName(item.key);
@@ -95,7 +95,7 @@ public class ContentView extends CustomView {
     public void loadBucket(String bucket) {
         if (StringUtils.isNotEmpty(bucket)) {
             this.bucket = bucket;
-            FileListing fileListing = ResManager.getInstance().getFiles(bucket, 1000);
+            FileListing fileListing = QiniuManager.getInstance().getFiles(bucket, 1000);
             loadFileListing(fileListing);
         }
     }

@@ -12,18 +12,18 @@ import com.qiniu.util.Auth;
 /**
  * Created by cmlanche on 2017/12/3.
  */
-public class ResManager {
+public class QiniuManager {
 
     static final String tag = "ResManager";
 
     private static class ResManagerHolder {
-        static ResManager instacne = new ResManager();
+        static QiniuManager instacne = new QiniuManager();
     }
 
-    private ResManager() {
+    private QiniuManager() {
     }
 
-    public static ResManager getInstance() {
+    public static QiniuManager getInstance() {
         return ResManagerHolder.instacne;
     }
 

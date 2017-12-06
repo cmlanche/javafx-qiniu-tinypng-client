@@ -5,13 +5,7 @@ import com.cmlanche.bloghelper.downloader.FileDownloader;
 import com.cmlanche.bloghelper.model.BucketFile;
 import com.fx.base.mvvm.CustomView;
 import javafx.fxml.FXML;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 /**
  * Created by cmlanche on 2017/12/4.
@@ -60,17 +54,17 @@ public class PreView extends CustomView {
 
                 @Override
                 public void onFinished(String path) {
-                    FileInputStream fis = null;
-                    try {
-                        fis = new FileInputStream(new File(path));
-                        Image image = new Image(fis);
-                        imageView.setImage(image);
-                        fis.close();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+//                    FileInputStream fis = null;
+//                    try {
+//                        fis = new FileInputStream(new File(path));
+//                        Image image = new Image(fis);
+//                        imageView.setImage(image);
+//                        fis.close();
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
                 }
 
                 @Override

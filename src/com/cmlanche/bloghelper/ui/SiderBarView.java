@@ -1,7 +1,7 @@
 package com.cmlanche.bloghelper.ui;
 
 import com.cmlanche.bloghelper.listeners.ItemSelectListener;
-import com.cmlanche.bloghelper.qiniu.ResManager;
+import com.cmlanche.bloghelper.qiniu.QiniuManager;
 import com.fx.base.mvvm.CustomView;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -22,7 +22,7 @@ public class SiderBarView extends CustomView {
 
     @Override
     protected void init() {
-        String[] buckets = ResManager.getInstance().getBuckets();
+        String[] buckets = QiniuManager.getInstance().getBuckets();
         listview.getItems().addAll(buckets);
     }
 

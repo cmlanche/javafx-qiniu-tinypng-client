@@ -10,6 +10,6 @@ import java.io.File;
 public class BucketUtils {
 
     public static String getBucketCacheFilePath(BucketFile bucketFile) {
-        return "cache" + File.separator + bucketFile.getBucket() + File.separator + bucketFile.getName();
+        return "cache" + File.separator + bucketFile.getBucket() + File.separator;
     }
 }
