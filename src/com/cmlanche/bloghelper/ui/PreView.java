@@ -3,8 +3,10 @@ package com.cmlanche.bloghelper.ui;
 import com.cmlanche.bloghelper.downloader.DownloadListener;
 import com.cmlanche.bloghelper.downloader.FileDownloader;
 import com.cmlanche.bloghelper.model.BucketFile;
+import com.cmlanche.bloghelper.utils.ResManager;
 import com.fx.base.mvvm.CustomView;
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
@@ -36,24 +38,26 @@ public class PreView extends CustomView {
         if (bucketFile != null) {
             this.bucketFile = bucketFile;
 
-            FileDownloader.getInstance().download(bucketFile, new DownloadListener() {
-                @Override
-                public void onWating() {
+            Image image = ResManager.getInstance().getImage(bucketFile);
+            if (image == null) {
+                FileDownloader.getInstance().download(bucketFile, new DownloadListener() {
+                    @Override
+                    public void onWating() {
 
-                }
+                    }
 
-                @Override
-                public void onStart() {
+                    @Override
+                    public void onStart() {
 
-                }
+                    }
 
-                @Override
-                public void onProgress(int progress) {
+                    @Override
+                    public void onProgress(int progress) {
 
-                }
+                    }
 
-                @Override
-                public void onFinished(String path) {
+                    @Override
+                    public void onFinished(String path) {
 //                    FileInputStream fis = null;
 //                    try {
 //                        fis = new FileInputStream(new File(path));
@@ -65,13 +69,16 @@ public class PreView extends CustomView {
 //                    } catch (IOException e) {
 //                        e.printStackTrace();
 //                    }
-                }
+                    }
 
-                @Override
-                public void onError(String error) {
+                    @Override
+                    public void onError(String error) {
 
-                }
-            });
+                    }
+                });
+            } else {
+                imageView.setImage(image);
+            }
         }
     }
 }

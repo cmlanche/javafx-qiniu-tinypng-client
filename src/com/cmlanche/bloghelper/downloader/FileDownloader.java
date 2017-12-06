@@ -1,6 +1,8 @@
 package com.cmlanche.bloghelper.downloader;
 
 import com.cmlanche.bloghelper.common.Logger;
+import com.cmlanche.bloghelper.model.BucketFile;
+import com.cmlanche.bloghelper.utils.BucketUtils;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -37,6 +39,11 @@ public class FileDownloader {
 
     private OkHttpClient okHttpClient;
     private Map<String, String> runningTask = new HashMap<>();
+
+    public void download(BucketFile bucketFile, DownloadListener listener) {
+        if (listener == null) return;
+        download(bucketFile.getUrl(), BucketUtils.getBucketCacheFilePath(bucketFile), bucketFile.getName(), listener);
+    }
 
     /**
      * 下载一个文件
