@@ -3,7 +3,7 @@
 <?import com.cmlanche.bloghelper.ui.ContentView?>
 <?import com.cmlanche.bloghelper.ui.PreView?>
 <?import com.cmlanche.bloghelper.ui.SiderBarView?>
-<?import com.cmlanche.bloghelper.ui.ToolBarView?>
+<?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
@@ -16,8 +16,8 @@
     <BorderPane>
         <!--顶部工具栏-->
         <top>
-            <ToolBarView fx:id="toolBarView">
-            </ToolBarView>
+            <MenuBar fx:id="menuBar">
+            </MenuBar>
         </top>
 
         <!--左侧导航栏-->

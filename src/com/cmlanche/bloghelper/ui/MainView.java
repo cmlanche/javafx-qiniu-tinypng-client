@@ -1,7 +1,10 @@
 package com.cmlanche.bloghelper.ui;
 
 import com.fx.base.mvvm.CustomView;
+import com.sun.javafx.util.Utils;
 import javafx.fxml.FXML;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 
 /**
  * Created by cmlanche on 2017/12/3.
@@ -12,7 +15,7 @@ public class MainView extends CustomView {
     @FXML
     SiderBarView siderBarView;
     @FXML
-    ToolBarView toolBarView;
+    MenuBar menuBar;
     @FXML
     ContentView contentView;
     @FXML
@@ -27,5 +30,11 @@ public class MainView extends CustomView {
     protected void initView() {
         siderBarView.setOnItemSelectedListener(contentView::loadBucket);
         contentView.setOnItemSelectedListener(preView::loadFile);
+
+        menuBar.getMenus().add(new Menu("hello"));
+
+        if (Utils.isMac()) {
+            menuBar.setUseSystemMenuBar(true);
+        }
     }
 }
