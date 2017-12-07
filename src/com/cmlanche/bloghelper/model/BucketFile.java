@@ -13,6 +13,11 @@ public class BucketFile {
     private String name;
 
     /**
+     * 文件hash值
+     */
+    private String hash;
+
+    /**
      * 文件类型
      */
     private String mineType;
@@ -78,5 +83,13 @@ public class BucketFile {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 }

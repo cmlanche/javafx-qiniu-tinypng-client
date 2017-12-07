@@ -1,7 +1,7 @@
 package com.cmlanche.bloghelper.ui;
 
 import com.fx.base.mvvm.CustomView;
-import com.sun.javafx.util.Utils;
+import com.sun.javafx.PlatformUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -33,7 +33,7 @@ public class MainView extends CustomView {
 
         menuBar.getMenus().add(new Menu("hello"));
 
-        if (Utils.isMac()) {
+        if (PlatformUtil.isMac()) {
             menuBar.setUseSystemMenuBar(true);
         }
     }

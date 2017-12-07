@@ -42,7 +42,7 @@ public class FileDownloader {
 
     public void download(BucketFile bucketFile, DownloadListener listener) {
         if (listener == null) return;
-        download(bucketFile.getUrl(), BucketUtils.getBucketCacheFilePath(bucketFile), bucketFile.getName(), listener);
+        download(bucketFile.getUrl(), BucketUtils.getLocalBucketPath(bucketFile), bucketFile.getName(), listener);
     }
 
     /**

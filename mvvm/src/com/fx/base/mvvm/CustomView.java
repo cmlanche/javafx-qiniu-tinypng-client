@@ -16,7 +16,10 @@ package com.fx.base.mvvm;
  */
 public abstract class CustomView extends DefaultView {
 
+    protected String tag;
+
     public CustomView() {
+        this.tag = this.getClass().getName();
         loadAsRoot();
     }
 }

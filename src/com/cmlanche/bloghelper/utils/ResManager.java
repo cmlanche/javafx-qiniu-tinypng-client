@@ -35,7 +35,7 @@ public class ResManager {
      * @return
      */
     public Image getImage(BucketFile bucketFile) {
-        File file = new File(BucketUtils.getBucketCacheFilePath(bucketFile), bucketFile.getName());
+        File file = new File(BucketUtils.getLocalBucketFilePath(bucketFile));
         if (file.exists()) {
             FileInputStream fileInputStream = null;
             try {
@@ -53,5 +53,27 @@ public class ResManager {
             }
         }
         return null;
+    }
+
+    /**
+     * 判断某个bucketfile是否存在
+     *
+     * @param bucketFile
+     * @return
+     */
+    public boolean existImage(BucketFile bucketFile) {
+        if (bucketFile == null) return false;
+        return new File(BucketUtils.getLocalBucketFilePath(bucketFile)).exists();
+    }
+
+    /**
+     * 某个bucketfile是否有压缩的文件（用于预览）
+     *
+     * @param bucketFile
+     * @return
+     */
+    public boolean existCompressedImage(BucketFile bucketFile) {
+        if (bucketFile == null) return false;
+        return new File(BucketUtils.getLocalBucketfileCompressedFilePath(bucketFile)).exists();
     }
 }
