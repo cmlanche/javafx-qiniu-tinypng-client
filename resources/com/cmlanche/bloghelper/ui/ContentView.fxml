@@ -16,6 +16,7 @@
             <TableColumn fx:id="mineTypeColumn" text="文件类型"/>
             <TableColumn fx:id="sizeColumn" text="大小"/>
             <TableColumn fx:id="updateTimeColumn" text="更新时间"/>
+            <TableColumn fx:id="statusColumn" text="状态"/>
             <TableColumn fx:id="operationColumn" text="操作"/>
         </columns>
     </TableView>
