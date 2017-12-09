@@ -8,6 +8,8 @@ import com.fx.base.mvvm.CustomView;
 import com.qiniu.storage.model.FileInfo;
 import com.qiniu.storage.model.FileListing;
 import javafx.fxml.FXML;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -36,6 +38,8 @@ public class ContentView extends CustomView {
     TableColumn<BucketFile, Long> updateTimeColumn;
     @FXML
     TableColumn<BucketFile, String> operationColumn;
+
+    private ContextMenu contextMenu;
 
     @Override
     public void init() {
@@ -69,6 +73,30 @@ public class ContentView extends CustomView {
                 }
             }
         });
+
+        this.initContextMenu();
+    }
+
+    /**
+     * 初始化菜单
+     */
+    private void initContextMenu() {
+        contextMenu = new ContextMenu();
+        contextMenu.getItems().add(getMenuItem("下载", "download"));
+        contextMenu.getItems().add(getMenuItem("删除", "delete"));
+        contextMenu.getItems().add(getMenuItem("优化", "optimize"));
+        contextMenu.getItems().add(getMenuItem("上传", "upload"));
+        tableView.setContextMenu(contextMenu);
+    }
+
+    private MenuItem getMenuItem(String name, String id) {
+        MenuItem menuItem = new MenuItem(name);
+        menuItem.setId(id);
+        menuItem.setOnAction(event -> {
+            MenuItem item = (MenuItem) event.getSource();
+            handleMenuEvent(item);
+        });
+        return menuItem;
     }
 
     public void setOnItemSelectedListener(ItemSelectListener<BucketFile> listener) {
@@ -97,6 +125,24 @@ public class ContentView extends CustomView {
             this.bucket = bucket;
             FileListing fileListing = QiniuManager.getInstance().getFiles(bucket, 1000);
             loadFileListing(fileListing);
+        }
+    }
+
+    /**
+     * 处理菜单事件
+     *
+     * @param item
+     */
+    private void handleMenuEvent(MenuItem item) {
+        switch (item.getId()) {
+            case "download":
+                break;
+            case "delete":
+                break;
+            case "optimize":
+                break;
+            case "upload":
+                break;
         }
     }
 }

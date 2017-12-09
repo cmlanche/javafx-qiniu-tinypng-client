@@ -7,6 +7,5 @@ hs_err_pid*
 .idea
 *iml
 production
-config
 cache
 logs
