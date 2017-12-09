@@ -13,7 +13,7 @@
 
     <BorderPane fx:id="main" prefWidth="120">
         <center>
-            <VBox style="-fx-background-color: lightblue">
+            <VBox>
                 <ListView fx:id="listview">
                 </ListView>
             </VBox>

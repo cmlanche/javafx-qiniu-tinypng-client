@@ -25,12 +25,12 @@ public class BucketFile {
     /**
      * 文件大小
      */
-    private String size;
+    private long size;
 
     /**
      * 更新时间
      */
-    private String updateTime;
+    private long updateTime;
 
     /**
      * 文件url地址
@@ -61,19 +61,19 @@ public class BucketFile {
         this.mineType = mineType;
     }
 
-    public String getSize() {
+    public long getSize() {
         return size;
     }
 
-    public void setSize(String size) {
+    public void setSize(long size) {
         this.size = size;
     }
 
-    public String getUpdateTime() {
+    public long getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(String updateTime) {
+    public void setUpdateTime(long updateTime) {
         this.updateTime = updateTime;
     }
 

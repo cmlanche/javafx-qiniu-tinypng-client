@@ -66,7 +66,7 @@ public class BucketUtils {
      * @param bucketFile
      * @return
      */
-    public static String getLocalBucketfileCompressedFilePath(BucketFile bucketFile) {
+    public static String getLocalBucketfileOptimizedFilePath(BucketFile bucketFile) {
         return getLocalBucketCompressedFilePath(bucketFile) + String.format("compressed_%s", bucketFile.getName());
     }
 
@@ -78,7 +78,7 @@ public class BucketUtils {
      */
     public static int getBucketFileStauts(BucketFile bucketFile) {
         try {
-            File optimizedFile = new File(getLocalBucketfileCompressedFilePath(bucketFile));
+            File optimizedFile = new File(getLocalBucketfileOptimizedFilePath(bucketFile));
             if (optimizedFile.exists()) {
                 String hash = new QETag().calcETag(optimizedFile.getPath());
                 if (bucketFile.getHash().equals(hash)) {

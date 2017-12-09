@@ -5,6 +5,8 @@ import com.cmlanche.bloghelper.listeners.ItemSelectListener;
 import com.cmlanche.bloghelper.model.BucketFile;
 import com.cmlanche.bloghelper.qiniu.QiniuManager;
 import com.cmlanche.bloghelper.utils.BucketUtils;
+import com.cmlanche.bloghelper.utils.UIUtils;
+import com.cmlanche.bloghelper.utils.Utils;
 import com.fx.base.mvvm.CustomView;
 import com.qiniu.storage.model.FileInfo;
 import com.qiniu.storage.model.FileListing;
@@ -38,11 +40,14 @@ public class ContentView extends CustomView {
     @FXML
     TableColumn<BucketFile, Long> updateTimeColumn;
     @FXML
-    TableColumn<BucketFile, String> operationColumn;
-    @FXML
     TableColumn<BucketFile, String> statusColumn;
 
     private ContextMenu contextMenu;
+    private MenuItem downloadMenuItem;
+    private MenuItem renameMenuItem;
+    private MenuItem deleteMenuItem;
+    private MenuItem optimzeMenuItem;
+    private MenuItem uploadMenuItem;
 
     @Override
     public void init() {
@@ -67,7 +72,27 @@ public class ContentView extends CustomView {
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         mineTypeColumn.setCellValueFactory(new PropertyValueFactory<>("mineType"));
         sizeColumn.setCellValueFactory(new PropertyValueFactory<>("size"));
+        sizeColumn.setCellFactory(param -> new TableCell<BucketFile, Long>() {
+            @Override
+            protected void updateItem(Long item, boolean empty) {
+                if (!empty) {
+                    setText(Utils.getSizeName(item));
+                } else {
+                    setText("");
+                }
+            }
+        });
         updateTimeColumn.setCellValueFactory(new PropertyValueFactory<>("updateTime"));
+        updateTimeColumn.setCellFactory(param -> new TableCell<BucketFile, Long>() {
+            @Override
+            protected void updateItem(Long item, boolean empty) {
+                if (!empty) {
+                    setText(Utils.getDate(item));
+                } else {
+                    setText("");
+                }
+            }
+        });
 
         tableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -83,20 +108,7 @@ public class ContentView extends CustomView {
                 if (!empty) {
                     BucketFile bucketFile = tableView.getItems().get(getIndex());
                     int status = BucketUtils.getBucketFileStauts(bucketFile);
-                    switch (status) {
-                        case BucketUtils.NORMAL:
-                            setStyle("-fx-background-color: red");
-                            break;
-                        case BucketUtils.DOWNLOADED:
-                            setStyle("-fx-background-color: yellow");
-                            break;
-                        case BucketUtils.OPTIMIZEED:
-                            setStyle("-fx-background-color: lightblue");
-                            break;
-                        case BucketUtils.OPTIMIZED_UPLOADED:
-                            setStyle("-fx-background-color: green");
-                            break;
-                    }
+                    getStyleClass().add(UIUtils.getStatusBackground(status));
                 } else {
                     setGraphic(null);
                 }
@@ -111,10 +123,41 @@ public class ContentView extends CustomView {
      */
     private void initContextMenu() {
         contextMenu = new ContextMenu();
-        contextMenu.getItems().add(getMenuItem("下载", "download"));
-        contextMenu.getItems().add(getMenuItem("删除", "delete"));
-        contextMenu.getItems().add(getMenuItem("优化", "optimize"));
-        contextMenu.getItems().add(getMenuItem("上传", "upload"));
+        contextMenu.getItems().add(downloadMenuItem = getMenuItem("下载", "download"));
+        contextMenu.getItems().add(renameMenuItem = getMenuItem("重命名", "rename"));
+        contextMenu.getItems().add(deleteMenuItem = getMenuItem("删除", "delete"));
+        contextMenu.getItems().add(optimzeMenuItem = getMenuItem("优化", "optimize"));
+        contextMenu.getItems().add(uploadMenuItem = getMenuItem("上传", "upload"));
+        contextMenu.showingProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                BucketFile bucketFile = tableView.getSelectionModel().getSelectedItem();
+                if (bucketFile != null) {
+                    int status = BucketUtils.getBucketFileStauts(bucketFile);
+                    switch (status) {
+                        case BucketUtils.NORMAL:
+                            downloadMenuItem.setDisable(false);
+                            uploadMenuItem.setDisable(true);
+                            optimzeMenuItem.setDisable(true);
+                            break;
+                        case BucketUtils.DOWNLOADED:
+                            downloadMenuItem.setDisable(true);
+                            uploadMenuItem.setDisable(true);
+                            optimzeMenuItem.setDisable(false);
+                            break;
+                        case BucketUtils.OPTIMIZEED:
+                            downloadMenuItem.setDisable(true);
+                            uploadMenuItem.setDisable(false);
+                            optimzeMenuItem.setDisable(false);
+                            break;
+                        case BucketUtils.OPTIMIZED_UPLOADED:
+                            downloadMenuItem.setDisable(true);
+                            uploadMenuItem.setDisable(true);
+                            optimzeMenuItem.setDisable(false);
+                            break;
+                    }
+                }
+            }
+        });
         tableView.setContextMenu(contextMenu);
     }
 
@@ -123,7 +166,10 @@ public class ContentView extends CustomView {
         menuItem.setId(id);
         menuItem.setOnAction(event -> {
             MenuItem item = (MenuItem) event.getSource();
-            handleMenuEvent(item);
+            BucketFile bucketFile = tableView.getSelectionModel().getSelectedItem();
+            if (bucketFile != null) {
+                handleAction(item.getId(), bucketFile);
+            }
         });
         return menuItem;
     }
@@ -141,8 +187,8 @@ public class ContentView extends CustomView {
                 bf.setName(item.key);
                 bf.setBucket(bucket);
                 bf.setMineType(item.mimeType);
-                bf.setSize(String.valueOf(item.fsize));
-                bf.setUpdateTime(String.valueOf(item.putTime));
+                bf.setSize(item.fsize);
+                bf.setUpdateTime(item.putTime / 10000);
                 bf.setUrl("http://" + domains[1] + "/" + item.key);
                 bf.setHash(item.hash);
                 tableView.getItems().add(bf);
@@ -161,11 +207,14 @@ public class ContentView extends CustomView {
     /**
      * 处理菜单事件
      *
-     * @param item
+     * @param bucketFile
+     * @param action
      */
-    private void handleMenuEvent(MenuItem item) {
-        switch (item.getId()) {
+    private void handleAction(String action, BucketFile bucketFile) {
+        switch (action) {
             case "download":
+                break;
+            case "rename":
                 break;
             case "delete":
                 break;
@@ -173,6 +222,13 @@ public class ContentView extends CustomView {
                 break;
             case "upload":
                 break;
+        }
+    }
+
+    public void handleAction(String action) {
+        BucketFile bucketFile = tableView.getSelectionModel().getSelectedItem();
+        if (bucketFile != null) {
+            handleAction(action, bucketFile);
         }
     }
 }

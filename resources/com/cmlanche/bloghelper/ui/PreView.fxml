@@ -1,15 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import java.net.URL?>
 <fx:root type="StackPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.40"
-         prefHeight="200" style="-fx-background-color: grey">
+         prefHeight="200" style="-fx-background-color: white">
     <stylesheets>
         <URL value="@PreView.css"/>
     </stylesheets>
 
-    <ImageView fx:id="imageView" preserveRatio="true" fitHeight="200">
-    </ImageView>
+    <BorderPane>
+        <left>
+            <VBox fx:id="detailBox" alignment="CENTER" spacing="8" prefWidth="240">
 
+                <!--原图信息-->
+                <Label text="原图信息"/>
+                <VBox styleClass="obox" alignment="CENTER_LEFT">
+                    <VBox.margin>
+                        <Insets left="8" right="8"/>
+                    </VBox.margin>
+                    <Label fx:id="o_nameLabel" styleClass="nameLabel"/>
+                    <Label fx:id="o_sizeLabel" styleClass="sizeLabel"/>
+                </VBox>
+
+                <!--处理后的图片信息-->
+                <Label text="处理后的图片信息"/>
+                <VBox styleClass="nbox" alignment="CENTER_LEFT">
+                    <VBox.margin>
+                        <Insets left="8" right="8"/>
+                    </VBox.margin>
+                    <Label fx:id="n_nameLabel" styleClass="nameLabel"/>
+                    <Label fx:id="n_sizeLabel" styleClass="sizeLabel"/>
+                </VBox>
+
+                <Button fx:id="operationBtn" text="优化"/>
+            </VBox>
+        </left>
+        <center>
+            <StackPane style="-fx-background-color: #fffafa">
+                <ImageView fx:id="imageView" preserveRatio="true" fitHeight="200">
+                </ImageView>
+                <Label fx:id="tipLabel">
+                </Label>
+            </StackPane>
+        </center>
+    </BorderPane>
 </fx:root>

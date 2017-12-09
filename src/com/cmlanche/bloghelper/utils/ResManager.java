@@ -72,8 +72,8 @@ public class ResManager {
      * @param bucketFile
      * @return
      */
-    public boolean existCompressedImage(BucketFile bucketFile) {
+    public boolean existOptimizedImage(BucketFile bucketFile) {
         if (bucketFile == null) return false;
-        return new File(BucketUtils.getLocalBucketfileCompressedFilePath(bucketFile)).exists();
+        return new File(BucketUtils.getLocalBucketfileOptimizedFilePath(bucketFile)).exists();
     }
 }

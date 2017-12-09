@@ -1,0 +1,16 @@
+
+.status-normal-bg {
+    -fx-background-color: red;
+}
+
+.status-download-bg {
+    -fx-background-color: yellow;
+}
+
+.status-optimize-bg {
+    -fx-background-color: lightblue;
+}
+
+.status-uploaded-bg {
+    -fx-background-color: green;
+}

@@ -32,8 +32,11 @@
             <BorderPane>
                 <top>
                     <ToolBar fx:id="toolbar">
-                        <Button fx:id="test" text="批量处理">
-                        </Button>
+                        <Button fx:id="downloadBtn" text="下载"/>
+                        <Button fx:id="renameBtn" text="重命名"/>
+                        <Button fx:id="deleteBtn" text="删除"/>
+                        <Button fx:id="optimizeBtn" text="优化"/>
+                        <Button fx:id="uploadBtn" text="上传"/>
                     </ToolBar>
                 </top>
                 <center>
