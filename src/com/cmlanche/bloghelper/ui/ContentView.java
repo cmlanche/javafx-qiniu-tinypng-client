@@ -4,6 +4,7 @@ import com.cmlanche.bloghelper.common.Config;
 import com.cmlanche.bloghelper.listeners.ItemSelectListener;
 import com.cmlanche.bloghelper.model.BucketFile;
 import com.cmlanche.bloghelper.qiniu.QiniuManager;
+import com.cmlanche.bloghelper.utils.BucketUtils;
 import com.fx.base.mvvm.CustomView;
 import com.qiniu.storage.model.FileInfo;
 import com.qiniu.storage.model.FileListing;
@@ -38,6 +39,8 @@ public class ContentView extends CustomView {
     TableColumn<BucketFile, Long> updateTimeColumn;
     @FXML
     TableColumn<BucketFile, String> operationColumn;
+    @FXML
+    TableColumn<BucketFile, String> statusColumn;
 
     private ContextMenu contextMenu;
 
@@ -70,6 +73,32 @@ public class ContentView extends CustomView {
             if (newValue != null) {
                 if (this.selectListener != null) {
                     this.selectListener.onItemSelected(newValue);
+                }
+            }
+        });
+
+        statusColumn.setCellFactory(param -> new TableCell<BucketFile, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                if (!empty) {
+                    BucketFile bucketFile = tableView.getItems().get(getIndex());
+                    int status = BucketUtils.getBucketFileStauts(bucketFile);
+                    switch (status) {
+                        case BucketUtils.NORMAL:
+                            setStyle("-fx-background-color: red");
+                            break;
+                        case BucketUtils.DOWNLOADED:
+                            setStyle("-fx-background-color: yellow");
+                            break;
+                        case BucketUtils.OPTIMIZEED:
+                            setStyle("-fx-background-color: lightblue");
+                            break;
+                        case BucketUtils.OPTIMIZED_UPLOADED:
+                            setStyle("-fx-background-color: green");
+                            break;
+                    }
+                } else {
+                    setGraphic(null);
                 }
             }
         });
@@ -115,6 +144,7 @@ public class ContentView extends CustomView {
                 bf.setSize(String.valueOf(item.fsize));
                 bf.setUpdateTime(String.valueOf(item.putTime));
                 bf.setUrl("http://" + domains[1] + "/" + item.key);
+                bf.setHash(item.hash);
                 tableView.getItems().add(bf);
             }
         }
