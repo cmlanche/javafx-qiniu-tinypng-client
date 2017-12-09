@@ -25,7 +25,7 @@ public abstract class BaseDialog{
     private double movey;
     private boolean isDragable;
     private static final boolean DEFAULT_DRAGABLE = true;
-    private CloseDialogListener listener;
+    private CloseDialogListener closeListener;
 
     public BaseDialog(boolean isDragable){
         this.isDragable = isDragable;
@@ -67,7 +67,7 @@ public abstract class BaseDialog{
     }
 
     public void setCloseListener(CloseDialogListener listener) {
-        this.listener = listener;
+        this.closeListener = listener;
     }
 
     /**
@@ -107,7 +107,9 @@ public abstract class BaseDialog{
      * @param data
      */
     public void onClosed(int flag, Object data) {
-
+        if (closeListener != null) {
+            closeListener.close(flag, data);
+        }
     }
 
     /**

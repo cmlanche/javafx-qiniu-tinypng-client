@@ -1,6 +1,7 @@
 package com.fx.base.mvvm;
 
 import com.fx.base.dialog.BaseDialog;
+import com.fx.base.dialog.CloseFlag;
 import com.fx.mvvm.FxmlView;
 import com.fx.mvvm.ViewLoader;
 import com.fx.mvvm.ViewModel;
@@ -69,6 +70,23 @@ public abstract class BaseView<VM extends ViewModel> extends StackPane implement
         if(mDialog != null){
             mDialog.close();
         }
+    }
+
+    public void closeDialog(int flag) {
+        closeDialog(flag, null);
+    }
+
+    public void closeDialog(int flag, Object data) {
+        setCloseData(flag, data);
+        closeDialog();
+    }
+
+    public void cancel() {
+        closeDialog(CloseFlag.CANCEL);
+    }
+
+    public void ok(Object closeData) {
+        closeDialog(CloseFlag.OK, closeData);
     }
 
     /**

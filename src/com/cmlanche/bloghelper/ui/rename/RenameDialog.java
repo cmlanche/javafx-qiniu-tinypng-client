@@ -20,7 +20,7 @@ public class RenameDialog extends BaseDialog {
      *
      * @param listener
      */
-    public static void showDialog(CloseDialogListener listener) {
+    public static void show(CloseDialogListener listener) {
         RenameDialog dialog = new RenameDialog();
         dialog.setCloseListener(listener);
         dialog.show();

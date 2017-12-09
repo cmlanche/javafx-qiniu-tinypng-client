@@ -4,9 +4,11 @@ import com.cmlanche.bloghelper.common.Config;
 import com.cmlanche.bloghelper.listeners.ItemSelectListener;
 import com.cmlanche.bloghelper.model.BucketFile;
 import com.cmlanche.bloghelper.qiniu.QiniuManager;
+import com.cmlanche.bloghelper.ui.rename.RenameDialog;
 import com.cmlanche.bloghelper.utils.BucketUtils;
 import com.cmlanche.bloghelper.utils.UIUtils;
 import com.cmlanche.bloghelper.utils.Utils;
+import com.fx.base.dialog.CloseFlag;
 import com.fx.base.mvvm.CustomView;
 import com.qiniu.storage.model.FileInfo;
 import com.qiniu.storage.model.FileListing;
@@ -215,6 +217,7 @@ public class ContentView extends CustomView {
             case "download":
                 break;
             case "rename":
+                rename(bucketFile);
                 break;
             case "delete":
                 break;
@@ -230,5 +233,19 @@ public class ContentView extends CustomView {
         if (bucketFile != null) {
             handleAction(action, bucketFile);
         }
+    }
+
+    /**
+     * 重命名一个bucketfile
+     *
+     * @param bucketFile
+     */
+    private void rename(BucketFile bucketFile) {
+        RenameDialog.show((flat, data) -> {
+            if (flat == CloseFlag.OK) {
+                String newName = (String) data;
+                QiniuManager.getInstance().rename(bucketFile, newName);
+            }
+        });
     }
 }

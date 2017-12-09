@@ -2,12 +2,15 @@ package com.cmlanche.bloghelper.qiniu;
 
 import com.cmlanche.bloghelper.common.Config;
 import com.cmlanche.bloghelper.common.Logger;
+import com.cmlanche.bloghelper.model.BucketFile;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
+import com.qiniu.http.Response;
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.model.FileListing;
 import com.qiniu.util.Auth;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by cmlanche on 2017/12/3.
@@ -98,5 +101,22 @@ public class QiniuManager {
             Logger.error(tag, e.getMessage(), e);
         }
         return null;
+    }
+
+    /**
+     * 重命名
+     *
+     * @param bucketFile
+     * @param newName
+     */
+    public void rename(BucketFile bucketFile, String newName) {
+        if (bucketFile == null || StringUtils.isEmpty(newName)) return;
+        try {
+            if (newName.equals(bucketFile.getName())) return;
+            Response response = bucketManager.rename(bucketFile.getBucket(), bucketFile.getName(), newName);
+            Logger.info(tag, response.toString());
+        } catch (QiniuException e) {
+            Logger.error(tag, e.getMessage(), e);
+        }
     }
 }
