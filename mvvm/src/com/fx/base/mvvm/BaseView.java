@@ -24,6 +24,9 @@ public abstract class BaseView<VM extends ViewModel> extends StackPane implement
 
     protected BaseDialog mDialog;
 
+    private int closeFlag;
+    private Object closeData;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.location = location;
@@ -44,6 +47,14 @@ public abstract class BaseView<VM extends ViewModel> extends StackPane implement
      */
     public void onDialogSet(BaseDialog dialog){
         this.mDialog = dialog;
+        if (this.mDialog != null) {
+            this.mDialog.getStage().showingProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue) {
+                    // dialog closed
+                    mDialog.onClosed(closeFlag, closeData);
+                }
+            });
+        }
     }
 
     /**
@@ -69,6 +80,25 @@ public abstract class BaseView<VM extends ViewModel> extends StackPane implement
             return mDialog.getStage().isShowing();
         }
         return false;
+    }
+
+    public void setCloseFlag(int closeFlag) {
+        this.closeFlag = closeFlag;
+    }
+
+    public void setCloseData(Object data) {
+        this.closeData = data;
+    }
+
+    /**
+     * 设置关闭的返回数据
+     *
+     * @param closeFlag
+     * @param data
+     */
+    public void setCloseData(int closeFlag, Object data) {
+        setCloseFlag(closeFlag);
+        setCloseData(data);
     }
 
     /**

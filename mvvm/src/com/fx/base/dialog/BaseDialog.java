@@ -25,6 +25,7 @@ public abstract class BaseDialog{
     private double movey;
     private boolean isDragable;
     private static final boolean DEFAULT_DRAGABLE = true;
+    private CloseDialogListener listener;
 
     public BaseDialog(boolean isDragable){
         this.isDragable = isDragable;
@@ -65,6 +66,10 @@ public abstract class BaseDialog{
         mStage.setScene(mScene);
     }
 
+    public void setCloseListener(CloseDialogListener listener) {
+        this.listener = listener;
+    }
+
     /**
      * 创建主体内容
      * @return
@@ -93,6 +98,16 @@ public abstract class BaseDialog{
         }else {
             Platform.runLater(() -> mStage.hide());
         }
+    }
+
+    /**
+     * 对话框关闭时的回调
+     *
+     * @param flag
+     * @param data
+     */
+    public void onClosed(int flag, Object data) {
+
     }
 
     /**
