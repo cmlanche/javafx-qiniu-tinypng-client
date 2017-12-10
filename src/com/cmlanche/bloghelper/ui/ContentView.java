@@ -1,6 +1,7 @@
 package com.cmlanche.bloghelper.ui;
 
 import com.cmlanche.bloghelper.common.Config;
+import com.cmlanche.bloghelper.common.Logger;
 import com.cmlanche.bloghelper.listeners.ItemSelectListener;
 import com.cmlanche.bloghelper.model.BucketFile;
 import com.cmlanche.bloghelper.qiniu.QiniuManager;
@@ -248,10 +249,14 @@ public class ContentView extends CustomView {
      * @param bucketFile
      */
     private void rename(BucketFile bucketFile) {
-        RenameDialog.show((flat, data) -> {
+        RenameDialog.show(bucketFile, (flat, data) -> {
             if (flat == CloseFlag.OK) {
                 String newName = (String) data;
-                QiniuManager.getInstance().rename(bucketFile, newName);
+                if (QiniuManager.getInstance().rename(bucketFile, newName)) {
+                    Logger.info(tag, "rename success:" + bucketFile.getName() + " -> " + newName);
+                    bucketFile.setName(newName);
+                    tableView.refresh();
+                }
             }
         });
     }

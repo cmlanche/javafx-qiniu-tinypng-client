@@ -1,5 +1,6 @@
 package com.cmlanche.bloghelper.ui.rename;
 
+import com.cmlanche.bloghelper.model.BucketFile;
 import com.fx.base.mvvm.DefaultView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +17,12 @@ public class RenameView extends DefaultView {
     @FXML
     TextField textField;
 
+    private BucketFile bucketFile;
+
+    public RenameView(BucketFile bucketFile) {
+        this.bucketFile = bucketFile;
+    }
+
     @Override
     protected void init() {
 
@@ -23,7 +30,7 @@ public class RenameView extends DefaultView {
 
     @Override
     protected void initView() {
-
+        textField.setText(bucketFile.getName());
     }
 
     @FXML

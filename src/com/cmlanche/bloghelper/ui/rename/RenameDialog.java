@@ -1,8 +1,8 @@
 package com.cmlanche.bloghelper.ui.rename;
 
+import com.cmlanche.bloghelper.model.BucketFile;
 import com.fx.base.dialog.BaseDialog;
 import com.fx.base.dialog.CloseDialogListener;
-import com.fx.mvvm.ViewLoader;
 import com.fx.mvvm.ViewTuple;
 
 /**
@@ -10,18 +10,19 @@ import com.fx.mvvm.ViewTuple;
  */
 public class RenameDialog extends BaseDialog {
 
-    @Override
-    protected ViewTuple<?, ?> createContent() {
-        return ViewLoader.load(RenameView.class);
+    public RenameDialog(ViewTuple<?, ?> viewTuple) {
+        super(viewTuple);
     }
 
     /**
      * 显示对话框
      *
+     * @param bucketFile
      * @param listener
      */
-    public static void show(CloseDialogListener listener) {
-        RenameDialog dialog = new RenameDialog();
+    public static void show(BucketFile bucketFile, CloseDialogListener listener) {
+        RenameView view = new RenameView(bucketFile);
+        RenameDialog dialog = new RenameDialog(view.load());
         dialog.setCloseListener(listener);
         dialog.show();
     }

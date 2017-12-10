@@ -27,20 +27,30 @@ public abstract class BaseDialog{
     private static final boolean DEFAULT_DRAGABLE = true;
     private CloseDialogListener closeListener;
 
-    public BaseDialog(boolean isDragable){
+    public BaseDialog(ViewTuple<?, ?> viewTuple) {
+        this(viewTuple, DEFAULT_DRAGABLE);
+    }
+
+    public BaseDialog(ViewTuple<?, ?> viewTuple, boolean isDragable) {
+        this.viewTuple = viewTuple;
         this.isDragable = isDragable;
-        if(Platform.isFxApplicationThread()){
+        this.safeCreate();
+    }
+
+    public BaseDialog(boolean isDragable) {
+        this.isDragable = isDragable;
+        this.safeCreate();
+    }
+
+    private void safeCreate() {
+        if (Platform.isFxApplicationThread()) {
             create();
-        }else {
-            Platform.runLater(() -> create());
+        } else {
+            Platform.runLater(this::create);
         }
     }
 
-    public BaseDialog(){
-        this(DEFAULT_DRAGABLE);
-    }
-
-    private void create(){
+    private BaseDialog create() {
         mStage = new Stage();
         mStage.initModality(Modality.APPLICATION_MODAL);
         mStage.initOwner(null);
@@ -64,6 +74,7 @@ public abstract class BaseDialog{
         mScene = new Scene(viewTuple.getRoot());
 //        mScene.getStylesheets().setAll(TestinStage.getInstance().getStylesheet());
         mStage.setScene(mScene);
+        return this;
     }
 
     public void setCloseListener(CloseDialogListener listener) {
@@ -74,7 +85,9 @@ public abstract class BaseDialog{
      * 创建主体内容
      * @return
      */
-    protected abstract ViewTuple<?, ?> createContent();
+    protected ViewTuple<?, ?> createContent() {
+        return viewTuple;
+    }
 
     public void show(){
         if(Platform.isFxApplicationThread()){

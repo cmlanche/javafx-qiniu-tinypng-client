@@ -109,14 +109,16 @@ public class QiniuManager {
      * @param bucketFile
      * @param newName
      */
-    public void rename(BucketFile bucketFile, String newName) {
-        if (bucketFile == null || StringUtils.isEmpty(newName)) return;
+    public boolean rename(BucketFile bucketFile, String newName) {
+        if (bucketFile == null || StringUtils.isEmpty(newName)) return false;
         try {
-            if (newName.equals(bucketFile.getName())) return;
+            if (newName.equals(bucketFile.getName())) return true;
             Response response = bucketManager.rename(bucketFile.getBucket(), bucketFile.getName(), newName);
             Logger.info(tag, response.toString());
+            return true;
         } catch (QiniuException e) {
             Logger.error(tag, e.getMessage(), e);
         }
+        return true;
     }
 }

@@ -7,8 +7,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import java.net.URL?>
-<StackPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.40"
-           fx:controller="com.cmlanche.bloghelper.ui.rename.RenameView">
+<StackPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.40">
     <stylesheets>
         <URL value="@RenameView.css"/>
     </stylesheets>

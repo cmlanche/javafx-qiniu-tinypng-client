@@ -122,7 +122,17 @@ public abstract class BaseView<VM extends ViewModel> extends StackPane implement
     /**
      * 把自己也作为一个视图节点Pane来加载(适合需要先创建自己，给自己传参的场景)
      */
+    @SuppressWarnings("unchecked")
     public ViewTuple loadAsRoot(){
         return ViewLoader.fxmlView(this.getClass()).codeBehind(this).root(this).load();
+    }
+
+    /**
+     * 复用自己作为Controller，fxml中的根节点与自己无关
+     * 自己作为Controller，但不作为根节点时调用
+     */
+    @SuppressWarnings("unchecked")
+    public ViewTuple<?, ?> load() {
+        return ViewLoader.fxmlView(this.getClass()).codeBehind(this).load();
     }
 }
