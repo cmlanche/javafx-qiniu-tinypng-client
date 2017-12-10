@@ -58,7 +58,7 @@ public class TinypngManger {
                 }
                 String outfile = BucketUtils.getLocalBucketfileOptimizedFilePath(bucketFile);
                 try {
-                    Logger.info(tag, "use tinypng compress file: " + outfile);
+                    Logger.info(tag, "use tinypng compress file: " + file);
                     if (compressListener != null) compressListener.compressing();
                     Source source = Tinify.fromFile(file.getPath());
                     source.toFile(outfile);

@@ -30,6 +30,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 /**
  * Created by cmlanche on 2017/12/3.
  */
@@ -63,6 +67,9 @@ public class ContentView extends CustomView {
     private MenuItem deleteMenuItem;
     private MenuItem optimzeMenuItem;
     private MenuItem uploadMenuItem;
+
+    private ExecutorService loadBucketPool;
+    private Future loadBucketFuture;
 
     @Override
     protected void onViewCreated() {
@@ -261,11 +268,19 @@ public class ContentView extends CustomView {
     }
 
     public void loadBucket(String bucket) {
-        if (StringUtils.isNotEmpty(bucket)) {
-            this.bucket = bucket;
-            FileListing fileListing = QiniuManager.getInstance().getFiles(bucket, 1000);
-            loadFileListing(fileListing);
+        if (loadBucketFuture != null && !loadBucketFuture.isDone()) {
+            loadBucketFuture.cancel(true);
         }
+        if (loadBucketPool == null) {
+            loadBucketPool = Executors.newSingleThreadExecutor();
+        }
+        loadBucketFuture = loadBucketPool.submit(() -> {
+            if (StringUtils.isNotEmpty(bucket)) {
+                this.bucket = bucket;
+                FileListing fileListing = QiniuManager.getInstance().getFiles(bucket, 1000);
+                runOnUiThread(() -> this.loadFileListing(fileListing));
+            }
+        });
     }
 
     /**

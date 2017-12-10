@@ -2,8 +2,10 @@ package com.cmlanche.bloghelper.ui;
 
 import com.cmlanche.bloghelper.listeners.ItemSelectListener;
 import com.cmlanche.bloghelper.qiniu.QiniuManager;
+import com.cmlanche.bloghelper.ui.siderbar.BucketItemView;
 import com.fx.base.mvvm.CustomView;
 import javafx.fxml.FXML;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import org.apache.commons.lang3.StringUtils;
 
@@ -32,17 +34,19 @@ public class SiderBarView extends CustomView {
     }
 
     void initView() {
-//        listview.setCellFactory(param -> new ListCell<String>() {
-//            @Override
-//            protected void updateItem(String item, boolean empty) {
-//                super.updateItem(item, empty);
-//                if (!empty) {
-//                    setText(item);
-//                } else {
-//                    setText("");
-//                }
-//            }
-//        });
+        listview.setCellFactory(param -> new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (!empty) {
+                    BucketItemView view = new BucketItemView();
+                    view.setBucketName(item);
+                    setGraphic(view);
+                } else {
+                    setGraphic(null);
+                }
+            }
+        });
         listview.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (StringUtils.isNotEmpty(newValue)) {
                 if (this.itemSelectListener != null) {
