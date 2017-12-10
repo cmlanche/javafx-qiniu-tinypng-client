@@ -18,6 +18,7 @@
             <TableColumn fx:id="sizeColumn" text="大小"/>
             <TableColumn fx:id="whColumn" text="尺寸"/>
             <TableColumn fx:id="updateTimeColumn" text="更新时间"/>
+            <TableColumn fx:id="processColumn" text="进度" prefWidth="120"/>
         </columns>
     </TableView>
 </fx:root>

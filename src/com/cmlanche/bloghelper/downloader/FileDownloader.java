@@ -38,7 +38,7 @@ public class FileDownloader {
     }
 
     private OkHttpClient okHttpClient;
-    private Map<String, String> runningTask = new HashMap<>();
+    private Map<String, DlState> runningTask = new HashMap<>();
 
     public void download(BucketFile bucketFile, DownloadListener listener) {
         if (listener == null) return;
@@ -55,7 +55,7 @@ public class FileDownloader {
             Logger.info(tag, "the url " + url + " is downloading, skip it");
             return;
         }
-        runningTask.put(url, url);
+        runningTask.put(url, new DlState(url));
 
         listener.onWating();
         Logger.info(tag, "begin to download:" + url);
@@ -88,11 +88,12 @@ public class FileDownloader {
                     }
                     fos = new FileOutputStream(new File(filePath, name));
                     long sum = 0;
+                    DlState dlState = runningTask.get(url);
                     while ((len = is.read(buf)) != -1) {
                         fos.write(buf, 0, len);
                         sum += len;
                         int progress = (int) (sum * 1.0f / total * 100);
-                        Logger.debug(tag, "download " + url + " " + progress + "%");
+                        dlState.setProgress(progress);
                         // 下载中
                         listener.onProgress(progress);
                     }
@@ -119,5 +120,29 @@ public class FileDownloader {
                 }
             }
         });
+    }
+
+    /**
+     * 检测文件是否正在下载中
+     *
+     * @param bucketFile
+     * @return
+     */
+    public boolean isDownloading(BucketFile bucketFile) {
+        if (bucketFile == null) return false;
+        return runningTask.containsKey(bucketFile.getUrl());
+    }
+
+    /**
+     * 获取文件下载状态
+     *
+     * @param bucketFile
+     * @return
+     */
+    public DlState getDownloadState(BucketFile bucketFile) {
+        if (bucketFile == null) return null;
+        if (runningTask.containsKey(bucketFile.getUrl()))
+            return runningTask.get(bucketFile.getUrl());
+        return null;
     }
 }

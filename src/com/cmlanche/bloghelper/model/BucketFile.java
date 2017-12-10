@@ -42,6 +42,11 @@ public class BucketFile {
      */
     private String url;
 
+    /**
+     * 进度信息
+     */
+    private ProcessData process;
+
     public String getBucket() {
         return bucket;
     }
@@ -104,5 +109,13 @@ public class BucketFile {
 
     public void setWhSize(String whSize) {
         this.whSize = whSize;
+    }
+
+    public ProcessData getProcess() {
+        return process;
+    }
+
+    public void setProcess(ProcessData process) {
+        this.process = process;
     }
 }

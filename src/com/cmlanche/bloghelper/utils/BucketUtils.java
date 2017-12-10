@@ -3,6 +3,7 @@ package com.cmlanche.bloghelper.utils;
 import com.cmlanche.bloghelper.common.Logger;
 import com.cmlanche.bloghelper.model.BucketFile;
 import com.cmlanche.bloghelper.qiniu.QETag;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -102,6 +103,38 @@ public class BucketUtils {
         }
 
         return NORMAL;
+    }
+
+    /**
+     * 重命名本地文件
+     *
+     * @param bucketFile
+     * @param name
+     * @return
+     */
+    public static boolean renameLocalFile(BucketFile bucketFile, String name) {
+        if (StringUtils.isEmpty(name)) return false;
+        if (name.equals(bucketFile.getName())) return true;
+        File ofile = new File(getLocalBucketFilePath(bucketFile));
+        if (ofile.exists()) {
+            return ofile.renameTo(new File(ofile.getParentFile().getAbsolutePath() + File.separator + name));
+        }
+        return false;
+    }
+
+    /**
+     * 重命名被优化的图片
+     *
+     * @param bucketFile
+     * @param name
+     * @return
+     */
+    public static boolean renameOptimizeFile(BucketFile bucketFile, String name) {
+        File ofile = new File(getLocalBucketfileOptimizedFilePath(bucketFile));
+        if (ofile.exists()) {
+            return ofile.renameTo(new File(ofile.getParentFile().getAbsolutePath() + File.separator + name));
+        }
+        return false;
     }
 
     /**

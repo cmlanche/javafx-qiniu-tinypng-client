@@ -2,8 +2,12 @@ package com.cmlanche.bloghelper.ui;
 
 import com.cmlanche.bloghelper.common.Config;
 import com.cmlanche.bloghelper.common.Logger;
+import com.cmlanche.bloghelper.downloader.DownloadListener;
+import com.cmlanche.bloghelper.downloader.FileDownloader;
 import com.cmlanche.bloghelper.listeners.ItemSelectListener;
 import com.cmlanche.bloghelper.model.BucketFile;
+import com.cmlanche.bloghelper.model.DownloadProcessData;
+import com.cmlanche.bloghelper.model.ProcessData;
 import com.cmlanche.bloghelper.qiniu.QiniuManager;
 import com.cmlanche.bloghelper.ui.alert.AlertDialog;
 import com.cmlanche.bloghelper.ui.rename.RenameDialog;
@@ -47,6 +51,8 @@ public class ContentView extends CustomView {
     TableColumn<BucketFile, String> statusColumn;
     @FXML
     TableColumn<BucketFile, String> whColumn;
+    @FXML
+    TableColumn<BucketFile, ProcessData> processColumn;
 
     private ContextMenu contextMenu;
     private MenuItem downloadMenuItem;
@@ -127,6 +133,37 @@ public class ContentView extends CustomView {
         });
 
         whColumn.setCellValueFactory(new PropertyValueFactory<>("whSize"));
+        processColumn.setCellValueFactory(new PropertyValueFactory<>("process"));
+        processColumn.setCellFactory(param -> new TableCell<BucketFile, ProcessData>() {
+            @Override
+            protected void updateItem(ProcessData item, boolean empty) {
+                if (!empty) {
+                    if (item != null) {
+                        if (item.getState() == ProcessData.IDLE) {
+                            setText("");
+                        } else {
+                            // 分析下载状态
+                            if (item instanceof DownloadProcessData) {
+                                DownloadProcessData data = (DownloadProcessData) item;
+                                if (data.getState() == ProcessData.ERROR) {
+                                    setText("下载出错：" + data.getError());
+                                } else if (data.getState() == ProcessData.WAITING) {
+                                    setText("等待下载...");
+                                } else if (data.getState() == ProcessData.PROCESSING) {
+                                    setText(String.format("下载中...%d%%", data.getProgress()));
+                                } else if (data.getState() == ProcessData.FINISH) {
+                                    setText("下载完成");
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    Logger.info(tag, "---------item === " + item);
+                    setText("");
+                    setGraphic(null);
+                }
+            }
+        });
 
         this.initContextMenu();
     }
@@ -206,6 +243,7 @@ public class ContentView extends CustomView {
                 bf.setHash(item.hash);
                 // 计算图像的宽高大小，当文件已经被下载了才去计算
                 bf.setWhSize(BucketUtils.getPictureSize(bf));
+                bf.setProcess(new ProcessData(ProcessData.IDLE));
                 tableView.getItems().add(bf);
             }
         }
@@ -228,6 +266,7 @@ public class ContentView extends CustomView {
     private void handleAction(String action, BucketFile bucketFile) {
         switch (action) {
             case "download":
+                download(bucketFile);
                 break;
             case "rename":
                 rename(bucketFile);
@@ -260,6 +299,9 @@ public class ContentView extends CustomView {
                 String newName = (String) data;
                 if (QiniuManager.getInstance().rename(bucketFile, newName)) {
                     Logger.info(tag, "rename success:" + bucketFile.getName() + " -> " + newName);
+                    // 如果该文件以及被下载的话，则需要更新本地的名称
+                    BucketUtils.renameLocalFile(bucketFile, newName);
+                    BucketUtils.renameOptimizeFile(bucketFile, newName);
                     bucketFile.setName(newName);
                     tableView.refresh();
                 }
@@ -278,6 +320,46 @@ public class ContentView extends CustomView {
                 if (QiniuManager.getInstance().delete(bucketFile)) {
                     tableView.getItems().remove(bucketFile);
                 }
+            }
+        });
+    }
+
+    /**
+     * 下载文件
+     *
+     * @param bucketFile
+     */
+    private void download(BucketFile bucketFile) {
+        FileDownloader.getInstance().download(bucketFile, new DownloadListener() {
+            @Override
+            public void onWating() {
+                bucketFile.setProcess(new DownloadProcessData(ProcessData.WAITING));
+            }
+
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onProgress(int progress) {
+                DownloadProcessData processData = new DownloadProcessData(ProcessData.PROCESSING);
+                processData.setProgress(progress);
+                bucketFile.setProcess(processData);
+                tableView.refresh();
+            }
+
+            @Override
+            public void onFinished(String path) {
+                bucketFile.setProcess(new DownloadProcessData(ProcessData.FINISH));
+                tableView.refresh();
+            }
+
+            @Override
+            public void onError(String error) {
+                DownloadProcessData data = new DownloadProcessData(ProcessData.ERROR);
+                data.setError(error);
+                bucketFile.setProcess(data);
             }
         });
     }
