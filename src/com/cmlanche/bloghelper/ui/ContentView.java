@@ -5,10 +5,13 @@ import com.cmlanche.bloghelper.common.Logger;
 import com.cmlanche.bloghelper.downloader.DownloadListener;
 import com.cmlanche.bloghelper.downloader.FileDownloader;
 import com.cmlanche.bloghelper.listeners.ItemSelectListener;
+import com.cmlanche.bloghelper.listeners.UpdateListener;
+import com.cmlanche.bloghelper.listeners.UploadListener;
 import com.cmlanche.bloghelper.model.BucketFile;
 import com.cmlanche.bloghelper.model.DownloadProcessData;
 import com.cmlanche.bloghelper.model.ProcessData;
 import com.cmlanche.bloghelper.model.TinnyCompressProcessData;
+import com.cmlanche.bloghelper.model.UploadProcessData;
 import com.cmlanche.bloghelper.qiniu.QiniuManager;
 import com.cmlanche.bloghelper.tinypng.CompressListener;
 import com.cmlanche.bloghelper.tinypng.TinypngManger;
@@ -41,6 +44,7 @@ public class ContentView extends CustomView {
 
     private String bucket;
     private ItemSelectListener<BucketFile> selectListener;
+    private UpdateListener<BucketFile> updateListener;
 
     @FXML
     TableView<BucketFile> tableView;
@@ -173,6 +177,15 @@ public class ContentView extends CustomView {
                                 } else if (data.getState() == ProcessData.FINISH) {
                                     setText("Tinny压缩完成！");
                                 }
+                            } else if (item instanceof UploadProcessData) {
+                                UploadProcessData data = (UploadProcessData) item;
+                                if (data.getState() == ProcessData.ERROR) {
+                                    setText("上传出错：" + data.getError());
+                                } else if (data.getState() == ProcessData.PROCESSING) {
+                                    setText("上传中...");
+                                } else if (data.getState() == ProcessData.FINISH) {
+                                    setText("上传完成！");
+                                }
                             }
                         }
                     }
@@ -246,6 +259,10 @@ public class ContentView extends CustomView {
         this.selectListener = listener;
     }
 
+    public void setUpdateListener(UpdateListener<BucketFile> updateListener) {
+        this.updateListener = updateListener;
+    }
+
     private void loadFileListing(FileListing fileListing) {
         tableView.getItems().clear();
         if (fileListing != null && fileListing.items.length > 0) {
@@ -304,6 +321,7 @@ public class ContentView extends CustomView {
                 optimize(bucketFile);
                 break;
             case "upload":
+                upload(bucketFile);
                 break;
         }
     }
@@ -380,6 +398,9 @@ public class ContentView extends CustomView {
             public void onFinished(String path) {
                 bucketFile.setProcess(new DownloadProcessData(ProcessData.FINISH));
                 tableView.refresh();
+                if (updateListener != null) {
+                    updateListener.onUpdate(bucketFile);
+                }
             }
 
             @Override
@@ -415,6 +436,9 @@ public class ContentView extends CustomView {
                 public void finish() {
                     bucketFile.setProcess(new TinnyCompressProcessData(ProcessData.FINISH));
                     tableView.refresh();
+                    if (updateListener != null) {
+                        updateListener.onUpdate(bucketFile);
+                    }
                 }
 
                 @Override
@@ -426,5 +450,43 @@ public class ContentView extends CustomView {
                 }
             });
         }
+    }
+
+    /**
+     * 上传一个已经被优化的文件
+     *
+     * @param bucketFile
+     */
+    private void upload(BucketFile bucketFile) {
+        if (bucketFile == null) return;
+        QiniuManager.getInstance().upload(bucketFile, new UploadListener() {
+            @Override
+            public void prepare() {
+                bucketFile.setProcess(new UploadProcessData(ProcessData.WAITING));
+                tableView.refresh();
+            }
+
+            @Override
+            public void uploading() {
+                bucketFile.setProcess(new UploadProcessData(ProcessData.PROCESSING));
+                tableView.refresh();
+            }
+
+            @Override
+            public void finish() {
+                bucketFile.setProcess(new UploadProcessData(ProcessData.FINISH));
+                tableView.refresh();
+                if (updateListener != null) {
+                    updateListener.onUpdate(bucketFile);
+                }
+            }
+
+            @Override
+            public void error(String message) {
+                UploadProcessData data = new UploadProcessData(ProcessData.ERROR);
+                data.setError(message);
+                bucketFile.setProcess(data);
+            }
+        });
     }
 }

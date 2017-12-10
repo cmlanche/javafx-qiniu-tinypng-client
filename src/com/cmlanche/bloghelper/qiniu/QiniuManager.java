@@ -2,15 +2,25 @@ package com.cmlanche.bloghelper.qiniu;
 
 import com.cmlanche.bloghelper.common.Config;
 import com.cmlanche.bloghelper.common.Logger;
+import com.cmlanche.bloghelper.listeners.UploadListener;
 import com.cmlanche.bloghelper.model.BucketFile;
+import com.cmlanche.bloghelper.utils.BucketUtils;
+import com.google.gson.Gson;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
+import com.qiniu.storage.UploadManager;
+import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.storage.model.FileListing;
 import com.qiniu.util.Auth;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by cmlanche on 2017/12/3.
@@ -32,12 +42,21 @@ public class QiniuManager {
 
     private Auth auth;
     private BucketManager bucketManager;
+    private UploadManager uploadManager;
+    private Configuration cfg;
+
+    private Map<String, BucketFile> uploadData;
+    private ExecutorService uploadPool;
 
     public void load() {
-        Configuration cfg = new Configuration(Zone.zone0());
+        cfg = new Configuration(Zone.autoZone());
         auth = Auth.create(Config.getInstance().getQiniuAccessKey(),
                 Config.getInstance().getQiniuSecretKey());
         bucketManager = new BucketManager(auth, cfg);
+        uploadManager = new UploadManager(cfg);
+
+        uploadData = new HashMap<>();
+        uploadPool = Executors.newFixedThreadPool(10);
     }
 
     /**
@@ -137,5 +156,56 @@ public class QiniuManager {
             Logger.error(tag, e.getMessage(), e);
         }
         return false;
+    }
+
+    /**
+     * (覆盖)上传文件
+     *
+     * @param bucketFile
+     * @return
+     */
+    public void upload(BucketFile bucketFile, UploadListener uploadListener) {
+        if (bucketFile == null) return;
+        if (uploadListener == null) return;
+        if (uploadData.containsKey(bucketFile.getUrl())) {
+            return;
+        }
+        uploadData.put(bucketFile.getUrl(), bucketFile);
+        uploadListener.prepare();
+
+        uploadPool.submit(() -> {
+            uploadListener.uploading();
+            String upToken = auth.uploadToken(bucketFile.getBucket(), bucketFile.getName());
+            Logger.info(tag, "上传token：" + upToken);
+            try {
+                Response response = uploadManager.put(BucketUtils.getLocalBucketfileOptimizedFilePath(bucketFile),
+                        bucketFile.getName(), upToken);
+                DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
+                Logger.info(tag, "上传成功：" + putRet.key + " - " + putRet.hash);
+                uploadListener.finish();
+            } catch (QiniuException ex) {
+                Response r = ex.response;
+                Logger.error(tag, ex.getMessage(), ex);
+                uploadListener.error(ex.getMessage());
+                try {
+                    Logger.error(tag, r.bodyString());
+                } catch (QiniuException ex2) {
+                    //ignore
+                }
+            } finally {
+                uploadData.remove(bucketFile.getUrl());
+            }
+        });
+    }
+
+    /**
+     * 是否正在下载中...
+     *
+     * @param bucketFile
+     * @return
+     */
+    public boolean isUploading(BucketFile bucketFile) {
+        if (bucketFile == null) return false;
+        return uploadData.containsKey(bucketFile.getUrl());
     }
 }

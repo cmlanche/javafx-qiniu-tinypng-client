@@ -74,7 +74,7 @@ public class BucketUtils {
      * @return
      */
     public static String getLocalBucketfileOptimizedFilePath(BucketFile bucketFile) {
-        return getLocalBucketCompressedFilePath(bucketFile) + String.format("compressed_%s", bucketFile.getName());
+        return getLocalBucketCompressedFilePath(bucketFile) + bucketFile.getName();
     }
 
     /**

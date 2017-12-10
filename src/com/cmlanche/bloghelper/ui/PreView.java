@@ -97,8 +97,12 @@ public class PreView extends CustomView {
                 case BucketUtils.OPTIMIZED_UPLOADED:
                     n_nameLabel.setText(optimizeFile.getName());
                     n_sizeLabel.setText(Utils.getSizeName(size));
-                    compressRatioLabel.setText(String.format("-%.2f%%",
-                            (1 - (float) FileUtils.sizeOf(optimizeFile) / bucketFile.getSize()) * 100));
+                    if (UIUtils.isJpg(bucketFile.getMineType()) || UIUtils.isPng(bucketFile.getMineType())) {
+                        operationBtn.setVisible(false);
+                    } else {
+                        operationBtn.setVisible(true);
+                    }
+                    compressRatioLabel.setText("完美，已经优化并上传了！");
                     operationBtn.setText("优化");
                     operationBtn.setUserData("optimize");
                     break;
