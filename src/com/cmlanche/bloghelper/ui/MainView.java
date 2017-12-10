@@ -1,12 +1,16 @@
 package com.cmlanche.bloghelper.ui;
 
+import com.cmlanche.bloghelper.Main;
 import com.cmlanche.bloghelper.utils.BucketUtils;
 import com.fx.base.mvvm.CustomView;
 import com.sun.javafx.PlatformUtil;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToolBar;
 
 /**
@@ -69,7 +73,18 @@ public class MainView extends CustomView {
         });
 
         // 初始化菜单
-        menuBar.getMenus().add(new Menu("hello"));
+        Menu setting = new Menu("设置");
+        setting.getItems().add(getMenuItem("TinyPNG", "tinypng"));
+        setting.getItems().add(getMenuItem("七牛", "qiniu"));
+        setting.getItems().add(getMenuItem("Gif", "gif"));
+
+        Menu about = new Menu("关于");
+        about.getItems().add(getMenuItem("关于BlogHelper", "aboutBlogHelper"));
+        about.getItems().add(getMenuItem("关于作者cmlanche", "aboutAnchor"));
+
+        menuBar.getMenus().add(setting);
+        menuBar.getMenus().add(about);
+
         if (PlatformUtil.isMac()) {
             menuBar.setUseSystemMenuBar(true);
         }
@@ -80,5 +95,41 @@ public class MainView extends CustomView {
         deleteBtn.setOnAction(event -> contentView.handleAction("delete"));
         optimizeBtn.setOnAction(event -> contentView.handleAction("optimize"));
         uploadBtn.setOnAction(event -> contentView.handleAction("upload"));
+    }
+
+    /**
+     * 创建菜单项
+     *
+     * @param name
+     * @param id
+     * @return
+     */
+    private MenuItem getMenuItem(String name, String id) {
+        MenuItem item = new MenuItem(name);
+        item.setId(id);
+        item.setOnAction(new MenuHandler());
+        return item;
+    }
+
+    private class MenuHandler implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent event) {
+            MenuItem menuItem = (MenuItem) event.getSource();
+            String id = menuItem.getId();
+            switch (id) {
+                case "tinypng":
+                    break;
+                case "qiniu":
+                    break;
+                case "gif":
+                    break;
+                case "aboutBlogHelper":
+                    Main.getHostService().showDocument("http://cmlanche.com/2017/12/03/%E5%9B%BE%E7%89%87%E5%8E%8B%E7%BC%A9(tinypng)+%E4%B8%83%E7%89%9B%E4%BA%91%E5%AD%98%E5%82%A8%E5%AE%A2%E6%88%B7%E7%AB%AF/");
+                    break;
+                case "aboutAnchor":
+                    Main.getHostService().showDocument("http://www.cmlanche.com");
+                    break;
+            }
+        }
     }
 }

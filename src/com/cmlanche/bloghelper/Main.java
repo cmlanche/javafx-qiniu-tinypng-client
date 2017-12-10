@@ -4,6 +4,7 @@ import com.cmlanche.bloghelper.ui.MainView;
 import com.cmlanche.bloghelper.utils.UIUtils;
 import com.fx.mvvm.MvvmFX;
 import javafx.application.Application;
+import javafx.application.HostServices;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -15,10 +16,13 @@ import java.util.ResourceBundle;
 public class Main extends Application {
 
     private static Stage mainStage;
+    private static HostServices hostServices;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         mainStage = primaryStage;
+        hostServices = getHostServices();
+
         ResourceBundle resourceBundle = ResourceBundle.getBundle("i18n");
         MvvmFX.setGlobalResourceBundle(resourceBundle);
 
@@ -31,5 +35,9 @@ public class Main extends Application {
 
     public static Stage getMainStage() {
         return mainStage;
+    }
+
+    public static HostServices getHostService() {
+        return hostServices;
     }
 }
