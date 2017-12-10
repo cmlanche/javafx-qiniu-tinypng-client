@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import java.net.URL?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml">
+
+    <stylesheets>
+        <URL value="@footer.css"/>
+    </stylesheets>
+
+    <right>
+        <HBox spacing="16">
+            <Button fx:id="cancel" text="取消">
+            </Button>
+            <Button fx:id="ok" text="确定">
+            </Button>
+        </HBox>
+    </right>
+
+</BorderPane>

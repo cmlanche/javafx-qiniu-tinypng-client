@@ -1,8 +1,7 @@
 package com.cmlanche.bloghelper.ui.rename;
 
 import com.cmlanche.bloghelper.model.BucketFile;
-import com.fx.base.mvvm.DefaultView;
-import javafx.event.ActionEvent;
+import com.cmlanche.bloghelper.ui.common.CommonDialogLayoutView;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import org.apache.commons.lang3.StringUtils;
@@ -12,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
  * Created by cmlanche on 2017/12/9.
  * 重命名界面
  */
-public class RenameView extends DefaultView {
+public class RenameView extends CommonDialogLayoutView {
 
     @FXML
     TextField textField;
@@ -24,17 +23,15 @@ public class RenameView extends DefaultView {
     }
 
     @Override
-    protected void init() {
-
+    protected void onViewCreated() {
+        super.onViewCreated();
+        textField.setText(bucketFile.getName());
+        setTitle("重命名");
     }
+
 
     @Override
-    protected void initView() {
-        textField.setText(bucketFile.getName());
-    }
-
-    @FXML
-    public void onSure(ActionEvent event) {
+    protected void onOk() {
         String name = textField.getText();
         if (StringUtils.isEmpty(name)) {
             return;
@@ -42,8 +39,8 @@ public class RenameView extends DefaultView {
         ok(name.trim());
     }
 
-    @FXML
-    public void onCancel(ActionEvent event) {
+    @Override
+    protected void onCancel() {
         cancel();
     }
 }

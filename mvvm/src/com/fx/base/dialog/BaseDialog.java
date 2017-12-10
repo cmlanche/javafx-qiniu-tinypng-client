@@ -9,6 +9,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
 /**
  * Created by cmlanche on 16/12/1.
@@ -26,20 +27,29 @@ public abstract class BaseDialog{
     private boolean isDragable;
     private static final boolean DEFAULT_DRAGABLE = true;
     private CloseDialogListener closeListener;
+    private Window owner;
 
-    public BaseDialog(ViewTuple<?, ?> viewTuple) {
-        this(viewTuple, DEFAULT_DRAGABLE);
+    public BaseDialog(Window owner, ViewTuple<?, ?> viewTuple) {
+        this(owner, viewTuple, DEFAULT_DRAGABLE);
     }
 
-    public BaseDialog(ViewTuple<?, ?> viewTuple, boolean isDragable) {
+    public BaseDialog(Window owner, ViewTuple<?, ?> viewTuple, boolean isDragable) {
+        this.owner = owner;
         this.viewTuple = viewTuple;
         this.isDragable = isDragable;
         this.safeCreate();
     }
 
-    public BaseDialog(boolean isDragable) {
-        this.isDragable = isDragable;
-        this.safeCreate();
+    public BaseDialog(Window owner, boolean isDragable) {
+        this(owner, null, isDragable);
+    }
+
+    public BaseDialog(Window owner) {
+        this(owner, DEFAULT_DRAGABLE);
+    }
+
+    public BaseDialog() {
+        this(null);
     }
 
     private void safeCreate() {
@@ -53,7 +63,7 @@ public abstract class BaseDialog{
     private BaseDialog create() {
         mStage = new Stage();
         mStage.initModality(Modality.APPLICATION_MODAL);
-        mStage.initOwner(null);
+        mStage.initOwner(getOwner());
         mStage.initStyle(StageStyle.TRANSPARENT);
         mStage.setResizable(false);
         viewTuple = createContent();
@@ -77,8 +87,9 @@ public abstract class BaseDialog{
         return this;
     }
 
-    public void setCloseListener(CloseDialogListener listener) {
+    public BaseDialog setCloseListener(CloseDialogListener listener) {
         this.closeListener = listener;
+        return this;
     }
 
     /**
@@ -87,6 +98,10 @@ public abstract class BaseDialog{
      */
     protected ViewTuple<?, ?> createContent() {
         return viewTuple;
+    }
+
+    protected Window getOwner() {
+        return owner;
     }
 
     public void show(){

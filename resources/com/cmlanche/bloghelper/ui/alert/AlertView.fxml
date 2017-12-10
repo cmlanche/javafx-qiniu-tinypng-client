@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import java.net.URL?>
 <StackPane fx:id="root" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.40">
     <stylesheets>
-        <URL value="@RenameView.css"/>
+        <URL value="@AlertView.css"/>
     </stylesheets>
 
     <VBox spacing="24">
-        <StackPane.margin>
-            <Insets left="16" right="16"/>
-        </StackPane.margin>
-
         <fx:include source="/com/cmlanche/bloghelper/ui/common/header.fxml"/>
-        <TextField fx:id="textField" prefWidth="200">
-        </TextField>
+        <HBox>
+            <Label fx:id="contentLabel">
+            </Label>
+        </HBox>
         <fx:include source="/com/cmlanche/bloghelper/ui/common/footer.fxml"/>
     </VBox>
 

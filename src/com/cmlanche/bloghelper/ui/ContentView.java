@@ -5,6 +5,7 @@ import com.cmlanche.bloghelper.common.Logger;
 import com.cmlanche.bloghelper.listeners.ItemSelectListener;
 import com.cmlanche.bloghelper.model.BucketFile;
 import com.cmlanche.bloghelper.qiniu.QiniuManager;
+import com.cmlanche.bloghelper.ui.alert.AlertDialog;
 import com.cmlanche.bloghelper.ui.rename.RenameDialog;
 import com.cmlanche.bloghelper.utils.BucketUtils;
 import com.cmlanche.bloghelper.utils.UIUtils;
@@ -55,12 +56,16 @@ public class ContentView extends CustomView {
     private MenuItem uploadMenuItem;
 
     @Override
+    protected void onViewCreated() {
+        initView();
+        init();
+    }
+
     public void init() {
         bucket = Config.getInstance().getLastestBucket();
         loadBucket(bucket);
     }
 
-    @Override
     public void initView() {
         indexColumn.setCellFactory(param -> new TableCell<BucketFile, Integer>() {
             @Override
@@ -228,6 +233,7 @@ public class ContentView extends CustomView {
                 rename(bucketFile);
                 break;
             case "delete":
+                delete(bucketFile);
                 break;
             case "optimize":
                 break;
@@ -256,6 +262,21 @@ public class ContentView extends CustomView {
                     Logger.info(tag, "rename success:" + bucketFile.getName() + " -> " + newName);
                     bucketFile.setName(newName);
                     tableView.refresh();
+                }
+            }
+        });
+    }
+
+    /**
+     * 删除一个文件
+     *
+     * @param bucketFile
+     */
+    private void delete(BucketFile bucketFile) {
+        AlertDialog.show("提示", String.format("确定要删除文件%s吗？", bucketFile.getName()), (flat, data) -> {
+            if (flat == CloseFlag.OK) {
+                if (QiniuManager.getInstance().delete(bucketFile)) {
+                    tableView.getItems().remove(bucketFile);
                 }
             }
         });

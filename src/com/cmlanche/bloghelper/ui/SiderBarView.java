@@ -21,13 +21,17 @@ public class SiderBarView extends CustomView {
     private ItemSelectListener<String> itemSelectListener;
 
     @Override
-    protected void init() {
+    protected void onViewCreated() {
+        initView();
+        init();
+    }
+
+    void init() {
         String[] buckets = QiniuManager.getInstance().getBuckets();
         listview.getItems().addAll(buckets);
     }
 
-    @Override
-    protected void initView() {
+    void initView() {
 //        listview.setCellFactory(param -> new ListCell<String>() {
 //            @Override
 //            protected void updateItem(String item, boolean empty) {

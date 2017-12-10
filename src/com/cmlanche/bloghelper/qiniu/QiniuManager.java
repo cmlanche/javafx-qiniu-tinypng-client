@@ -121,4 +121,21 @@ public class QiniuManager {
         }
         return true;
     }
+
+    /**
+     * 删除文件
+     *
+     * @param bucketFile
+     * @return
+     */
+    public boolean delete(BucketFile bucketFile) {
+        if (bucketFile == null) return false;
+        try {
+            bucketManager.delete(bucketFile.getBucket(), bucketFile.getName());
+            return true;
+        } catch (QiniuException e) {
+            Logger.error(tag, e.getMessage(), e);
+        }
+        return false;
+    }
 }

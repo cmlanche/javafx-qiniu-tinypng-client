@@ -14,8 +14,11 @@ import java.util.ResourceBundle;
  */
 public class Main extends Application {
 
+    private static Stage mainStage;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
+        mainStage = primaryStage;
         ResourceBundle resourceBundle = ResourceBundle.getBundle("i18n");
         MvvmFX.setGlobalResourceBundle(resourceBundle);
 
@@ -24,5 +27,9 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle(resourceBundle.getString("app.title"));
         primaryStage.show();
+    }
+
+    public static Stage getMainStage() {
+        return mainStage;
     }
 }

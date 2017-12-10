@@ -6,19 +6,5 @@ package com.fx.base.mvvm;
  */
 public abstract class DefaultView extends BaseView<DefaultViewModel> {
 
-    @Override
-    protected void onViewCreated() {
-        this.initView();
-        this.init();
-    }
 
-    /**
-     * 初始化数据
-     */
-    protected abstract void init();
-
-    /**
-     * 初始化界面
-     */
-    protected abstract void initView();
 }

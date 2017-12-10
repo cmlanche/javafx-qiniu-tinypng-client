@@ -37,12 +37,7 @@ public class MainView extends CustomView {
     Button uploadBtn;
 
     @Override
-    protected void init() {
-
-    }
-
-    @Override
-    protected void initView() {
+    protected void onViewCreated() {
         siderBarView.setOnItemSelectedListener(contentView::loadBucket);
         contentView.setOnItemSelectedListener(bucketFile -> {
             // 设置操作状态

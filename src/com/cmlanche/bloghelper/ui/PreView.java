@@ -45,12 +45,8 @@ public class PreView extends CustomView {
     private BucketFile bucketFile;
 
     @Override
-    protected void init() {
+    protected void onViewCreated() {
 
-    }
-
-    @Override
-    protected void initView() {
     }
 
     /**
