@@ -13,7 +13,7 @@ import javafx.stage.Window;
 public class RenameDialog extends BaseDialog {
 
     public RenameDialog(ViewTuple<?, ?> viewTuple) {
-        super(null, viewTuple);
+        super(Main.getMainStage(), viewTuple, false);
     }
 
     @Override

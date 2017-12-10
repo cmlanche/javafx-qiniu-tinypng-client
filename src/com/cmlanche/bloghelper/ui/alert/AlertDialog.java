@@ -12,7 +12,7 @@ import javafx.stage.Window;
 public class AlertDialog extends BaseDialog {
 
     public AlertDialog(Window owner, ViewTuple<?, ?> viewTuple) {
-        super(owner, viewTuple);
+        super(owner, viewTuple, false);
     }
 
     public static void show(String title, String content, CloseDialogListener listener) {

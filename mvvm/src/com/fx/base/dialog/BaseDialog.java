@@ -62,9 +62,9 @@ public abstract class BaseDialog{
 
     private BaseDialog create() {
         mStage = new Stage();
-        mStage.initModality(Modality.APPLICATION_MODAL);
+        mStage.initModality(Modality.WINDOW_MODAL);
         mStage.initOwner(getOwner());
-        mStage.initStyle(StageStyle.TRANSPARENT);
+        mStage.initStyle(StageStyle.DECORATED);
         mStage.setResizable(false);
         viewTuple = createContent();
         if(viewTuple.getView() instanceof BaseView){

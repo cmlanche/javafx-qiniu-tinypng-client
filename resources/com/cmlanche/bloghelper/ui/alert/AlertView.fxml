@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -11,6 +12,9 @@
     </stylesheets>
 
     <VBox spacing="24">
+        <StackPane.margin>
+            <Insets left="32" right="32" top="16" bottom="16"/>
+        </StackPane.margin>
         <fx:include source="/com/cmlanche/bloghelper/ui/common/header.fxml"/>
         <HBox>
             <Label fx:id="contentLabel">
