@@ -1,5 +1,6 @@
 package com.cmlanche.bloghelper.tinypng;
 
+import com.cmlanche.bloghelper.common.Config;
 import com.cmlanche.bloghelper.common.Logger;
 import com.cmlanche.bloghelper.model.BucketFile;
 import com.cmlanche.bloghelper.utils.BucketUtils;
@@ -25,7 +26,7 @@ public class TinypngManger {
     }
 
     private TinypngManger() {
-        Tinify.setKey("HkrQMvyzirhHrcSctf9C1FPXUdlK5Sfn");
+        Tinify.setKey(Config.getInstance().getTinyToken());
         pool = Executors.newFixedThreadPool(5);
         bucketFileMap = new HashMap<>();
     }

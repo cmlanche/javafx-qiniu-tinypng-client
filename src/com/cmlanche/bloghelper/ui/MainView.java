@@ -71,7 +71,9 @@ public class MainView extends CustomView {
             // 加载预览图
             preView.loadFile(bucketFile);
         });
-        contentView.setUpdateListener(bucketFile -> preView.loadFile(bucketFile));
+        contentView.setUpdateListener(bucketFile -> {
+            preView.loadFile(bucketFile);
+        });
 
         // 初始化菜单
         Menu setting = new Menu("设置");

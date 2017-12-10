@@ -47,6 +47,7 @@ public class Config {
     private String qiniuAccessKey;
     private String qiniuSecretKey;
     private String lastestBucket;
+    private String tinyToken;
 
     public static Config getInstance() {
         return ConfigHolder.config;
@@ -89,5 +90,20 @@ public class Config {
         if (StringUtils.isEmpty(lastestBucket)) return;
         this.lastestBucket = lastestBucket;
         configProp.setProperty("qiniu.lastest.bucket", lastestBucket);
+        save();
+    }
+
+    public String getTinyToken() {
+        if (StringUtils.isEmpty(tinyToken)) {
+            tinyToken = configProp.getProperty("tinypng.token");
+        }
+        return tinyToken;
+    }
+
+    public void setTinyToken(String token) {
+        if (StringUtils.isEmpty(token)) return;
+        this.tinyToken = token;
+        configProp.setProperty("tinypng.token", token);
+        save();
     }
 }
