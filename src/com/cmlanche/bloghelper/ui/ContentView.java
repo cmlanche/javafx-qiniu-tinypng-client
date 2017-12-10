@@ -8,7 +8,10 @@ import com.cmlanche.bloghelper.listeners.ItemSelectListener;
 import com.cmlanche.bloghelper.model.BucketFile;
 import com.cmlanche.bloghelper.model.DownloadProcessData;
 import com.cmlanche.bloghelper.model.ProcessData;
+import com.cmlanche.bloghelper.model.TinnyCompressProcessData;
 import com.cmlanche.bloghelper.qiniu.QiniuManager;
+import com.cmlanche.bloghelper.tinypng.CompressListener;
+import com.cmlanche.bloghelper.tinypng.TinypngManger;
 import com.cmlanche.bloghelper.ui.alert.AlertDialog;
 import com.cmlanche.bloghelper.ui.rename.RenameDialog;
 import com.cmlanche.bloghelper.utils.BucketUtils;
@@ -154,11 +157,19 @@ public class ContentView extends CustomView {
                                 } else if (data.getState() == ProcessData.FINISH) {
                                     setText("下载完成");
                                 }
+                            } else if (item instanceof TinnyCompressProcessData) {
+                                TinnyCompressProcessData data = (TinnyCompressProcessData) item;
+                                if (data.getState() == ProcessData.ERROR) {
+                                    setText("下载出错：" + data.getError());
+                                } else if (data.getState() == ProcessData.PROCESSING) {
+                                    setText("Tinny压缩中...");
+                                } else if (data.getState() == ProcessData.FINISH) {
+                                    setText("Tinny压缩完成！");
+                                }
                             }
                         }
                     }
                 } else {
-                    Logger.info(tag, "---------item === " + item);
                     setText("");
                     setGraphic(null);
                 }
@@ -275,6 +286,7 @@ public class ContentView extends CustomView {
                 delete(bucketFile);
                 break;
             case "optimize":
+                optimize(bucketFile);
                 break;
             case "upload":
                 break;
@@ -315,7 +327,7 @@ public class ContentView extends CustomView {
      * @param bucketFile
      */
     private void delete(BucketFile bucketFile) {
-        AlertDialog.show("提示", String.format("确定要删除文件%s吗？", bucketFile.getName()), (flat, data) -> {
+        AlertDialog.show("提示", String.format("确定要删除文件'%s'吗？", bucketFile.getName()), (flat, data) -> {
             if (flat == CloseFlag.OK) {
                 if (QiniuManager.getInstance().delete(bucketFile)) {
                     tableView.getItems().remove(bucketFile);
@@ -362,5 +374,42 @@ public class ContentView extends CustomView {
                 bucketFile.setProcess(data);
             }
         });
+    }
+
+    /**
+     * 优化一个文件
+     *
+     * @param bucketFile
+     */
+    private void optimize(BucketFile bucketFile) {
+        if (UIUtils.isPng(bucketFile.getMineType()) || UIUtils.isJpg(bucketFile.getMineType())) {
+            TinypngManger.getInstance().compress(bucketFile, new CompressListener() {
+                @Override
+                public void prepare() {
+                    bucketFile.setProcess(new TinnyCompressProcessData(ProcessData.WAITING));
+                    tableView.refresh();
+                }
+
+                @Override
+                public void compressing() {
+                    bucketFile.setProcess(new TinnyCompressProcessData(ProcessData.PROCESSING));
+                    tableView.refresh();
+                }
+
+                @Override
+                public void finish() {
+                    bucketFile.setProcess(new TinnyCompressProcessData(ProcessData.FINISH));
+                    tableView.refresh();
+                }
+
+                @Override
+                public void error(String message) {
+                    TinnyCompressProcessData data = new TinnyCompressProcessData(ProcessData.ERROR);
+                    data.setError(message);
+                    bucketFile.setProcess(data);
+                    tableView.refresh();
+                }
+            });
+        }
     }
 }

@@ -43,10 +43,11 @@ public class TinypngManger {
      * @param bucketFile
      * @return
      */
-    public void compress(BucketFile bucketFile) {
+    public void compress(BucketFile bucketFile, CompressListener compressListener) {
         if (bucketFileMap.containsKey(bucketFile.getHash())) {
             return;
         }
+        if (compressListener != null) compressListener.prepare();
         bucketFileMap.put(bucketFile.getHash(), bucketFile);
         pool.submit(() -> {
             File file = new File(BucketUtils.getLocalBucketFilePath(bucketFile));
@@ -58,15 +59,30 @@ public class TinypngManger {
                 String outfile = BucketUtils.getLocalBucketfileOptimizedFilePath(bucketFile);
                 try {
                     Logger.info(tag, "use tinypng compress file: " + outfile);
+                    if (compressListener != null) compressListener.compressing();
                     Source source = Tinify.fromFile(file.getPath());
                     source.toFile(outfile);
+                    if (compressListener != null) compressListener.finish();
                 } catch (IOException e) {
                     Logger.error(tag, e.getMessage(), e);
+                    if (compressListener != null) compressListener.error(e.getMessage());
                 }
             } else {
+                if (compressListener != null) compressListener.error("文件不存在！");
                 Logger.error(tag, "the bucket file is not exist: " + file);
             }
             bucketFileMap.remove(bucketFile.getHash());
         });
+    }
+
+    /**
+     * 判断某个文件是否在压缩中
+     *
+     * @param bucketFile
+     * @return
+     */
+    public boolean isCompressing(BucketFile bucketFile) {
+        if (bucketFile == null) return false;
+        return bucketFileMap.containsKey(bucketFile.getHash());
     }
 }
