@@ -41,6 +41,8 @@ public class PreView extends CustomView {
     VBox detailBox;
     @FXML
     Label tipLabel;
+    @FXML
+    Label compressRatioLabel;
 
     private BucketFile bucketFile;
 
@@ -71,26 +73,32 @@ public class PreView extends CustomView {
             }
             switch (status) {
                 case BucketUtils.NORMAL:
-                    n_nameLabel.setText("---");
-                    n_sizeLabel.setText("---");
+                    n_nameLabel.setText("-");
+                    n_sizeLabel.setText("-");
+                    compressRatioLabel.setText("-");
                     operationBtn.setText("下载");
                     operationBtn.setUserData("download");
                     break;
                 case BucketUtils.DOWNLOADED:
-                    n_nameLabel.setText("---");
-                    n_sizeLabel.setText("---");
+                    n_nameLabel.setText("-");
+                    n_sizeLabel.setText("-");
+                    compressRatioLabel.setText("-");
                     operationBtn.setText("优化");
                     operationBtn.setUserData("optimize");
                     break;
                 case BucketUtils.OPTIMIZEED:
                     n_nameLabel.setText(optimizeFile.getName());
                     n_sizeLabel.setText(Utils.getSizeName(size));
+                    compressRatioLabel.setText(String.format("-%.2f%%",
+                            (1 - (float) FileUtils.sizeOf(optimizeFile) / bucketFile.getSize()) * 100));
                     operationBtn.setText("上传");
                     operationBtn.setUserData("upload");
                     break;
                 case BucketUtils.OPTIMIZED_UPLOADED:
                     n_nameLabel.setText(optimizeFile.getName());
                     n_sizeLabel.setText(Utils.getSizeName(size));
+                    compressRatioLabel.setText(String.format("-%.2f%%",
+                            (1 - (float) FileUtils.sizeOf(optimizeFile) / bucketFile.getSize()) * 100));
                     operationBtn.setText("优化");
                     operationBtn.setUserData("optimize");
                     break;

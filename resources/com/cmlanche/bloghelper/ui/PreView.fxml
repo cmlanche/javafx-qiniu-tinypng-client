@@ -20,7 +20,7 @@
 
                 <!--原图信息-->
                 <Label text="原图信息"/>
-                <VBox styleClass="obox" alignment="CENTER_LEFT">
+                <VBox styleClass="obox" alignment="CENTER_LEFT" spacing="8">
                     <VBox.margin>
                         <Insets left="8" right="8"/>
                     </VBox.margin>
@@ -30,12 +30,13 @@
 
                 <!--处理后的图片信息-->
                 <Label text="处理后的图片信息"/>
-                <VBox styleClass="nbox" alignment="CENTER_LEFT">
+                <VBox styleClass="nbox" alignment="CENTER_LEFT" spacing="8">
                     <VBox.margin>
                         <Insets left="8" right="8"/>
                     </VBox.margin>
                     <Label fx:id="n_nameLabel" styleClass="nameLabel"/>
                     <Label fx:id="n_sizeLabel" styleClass="sizeLabel"/>
+                    <Label fx:id="compressRatioLabel"/>
                 </VBox>
 
                 <Button fx:id="operationBtn" text="优化"/>
@@ -43,7 +44,7 @@
         </left>
         <center>
             <StackPane style="-fx-background-color: #fffafa">
-                <ImageView fx:id="imageView" preserveRatio="true" fitHeight="200">
+                <ImageView fx:id="imageView" preserveRatio="true" fitHeight="200" fitWidth="480">
                 </ImageView>
                 <Label fx:id="tipLabel">
                 </Label>
