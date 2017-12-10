@@ -33,6 +33,11 @@ public class BucketFile {
     private long updateTime;
 
     /**
+     * 图像的宽高大小
+     */
+    private String whSize;
+
+    /**
      * 文件url地址
      */
     private String url;
@@ -91,5 +96,13 @@ public class BucketFile {
 
     public void setHash(String hash) {
         this.hash = hash;
+    }
+
+    public String getWhSize() {
+        return whSize;
+    }
+
+    public void setWhSize(String whSize) {
+        this.whSize = whSize;
     }
 }

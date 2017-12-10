@@ -4,7 +4,13 @@ import com.cmlanche.bloghelper.common.Logger;
 import com.cmlanche.bloghelper.model.BucketFile;
 import com.cmlanche.bloghelper.qiniu.QETag;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 /**
  * Created by cmlanche on 2017/12/5.
@@ -96,6 +102,62 @@ public class BucketUtils {
         }
 
         return NORMAL;
+    }
+
+    /**
+     * 获取图片宽高尺寸
+     *
+     * @param bucketFile
+     * @return
+     */
+    public static String getPictureSize(BucketFile bucketFile) {
+        File file = new File(BucketUtils.getLocalBucketFilePath(bucketFile));
+        if (file.exists()) {
+            if (UIUtils.isJpg(bucketFile.getMineType()) || UIUtils.isPng(bucketFile.getMineType())) {
+                try {
+                    FileInputStream fis = new FileInputStream(file);
+                    BufferedImage bufferedImage = ImageIO.read(fis);
+                    String size;
+                    if (bufferedImage != null) {
+                        size = String.format("%dx%d", bufferedImage.getWidth(), bufferedImage.getHeight());
+                    } else {
+                        size = "未能读取图片尺寸";
+                    }
+                    fis.close();
+                    return size;
+                } catch (IOException e) {
+                    Logger.error(tag, e.getMessage(), e);
+                }
+            } else if (UIUtils.isGif(bucketFile.getMineType())) {
+                try {
+                    //要操作的图片
+                    FileInputStream is = new FileInputStream(file);
+                    //把图片读取读取到内存的流
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    byte buffer[] = new byte[1024];
+                    int leng = 0;
+                    while ((leng = is.read(buffer)) != -1) {
+                        bos.write(buffer, 0, leng);
+                    }
+                    //截取第一张图
+                    String size;
+                    BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(bos.toByteArray(), 0, bos.size()));
+                    if (bufferedImage != null) {
+                        size = String.format("%dx%d", bufferedImage.getWidth(), bufferedImage.getHeight());
+                    } else {
+                        size = "未能读取图片尺寸";
+                    }
+                    is.close();
+                    bos.close();
+                    return size;
+                } catch (Exception e) {
+                    Logger.error(tag, e.getMessage(), e);
+                }
+            }
+        } else {
+            return "-";
+        }
+        return "";
     }
 
 }

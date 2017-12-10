@@ -34,4 +34,8 @@ public class UIUtils {
     public static boolean isGif(String minetype) {
         return "image/gif".equalsIgnoreCase(minetype);
     }
+
+    public static boolean isPicture(String minetype) {
+        return isPng(minetype) || isJpg(minetype) || isGif(minetype);
+    }
 }

@@ -43,6 +43,8 @@ public class ContentView extends CustomView {
     TableColumn<BucketFile, Long> updateTimeColumn;
     @FXML
     TableColumn<BucketFile, String> statusColumn;
+    @FXML
+    TableColumn<BucketFile, String> whColumn;
 
     private ContextMenu contextMenu;
     private MenuItem downloadMenuItem;
@@ -107,6 +109,7 @@ public class ContentView extends CustomView {
         statusColumn.setCellFactory(param -> new TableCell<BucketFile, String>() {
             @Override
             protected void updateItem(String item, boolean empty) {
+                getStyleClass().clear();
                 if (!empty) {
                     BucketFile bucketFile = tableView.getItems().get(getIndex());
                     int status = BucketUtils.getBucketFileStauts(bucketFile);
@@ -116,6 +119,8 @@ public class ContentView extends CustomView {
                 }
             }
         });
+
+        whColumn.setCellValueFactory(new PropertyValueFactory<>("whSize"));
 
         this.initContextMenu();
     }
@@ -190,9 +195,11 @@ public class ContentView extends CustomView {
                 bf.setBucket(bucket);
                 bf.setMineType(item.mimeType);
                 bf.setSize(item.fsize);
-                bf.setUpdateTime(item.putTime / 10000);
-                bf.setUrl("http://" + domains[1] + "/" + item.key);
+                bf.setUpdateTime(item.putTime / 10000); // 七牛云的文件时间单位为100纳秒
+                bf.setUrl("http://" + domains[0] + "/" + item.key);
                 bf.setHash(item.hash);
+                // 计算图像的宽高大小，当文件已经被下载了才去计算
+                bf.setWhSize(BucketUtils.getPictureSize(bf));
                 tableView.getItems().add(bf);
             }
         }
