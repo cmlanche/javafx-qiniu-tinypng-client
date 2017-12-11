@@ -73,6 +73,7 @@ public class PreView extends CustomView {
             }
             switch (status) {
                 case BucketUtils.NORMAL:
+                    operationBtn.setVisible(true);
                     n_nameLabel.setText("-");
                     n_sizeLabel.setText("-");
                     compressRatioLabel.setText("-");
@@ -80,6 +81,7 @@ public class PreView extends CustomView {
                     operationBtn.setUserData("download");
                     break;
                 case BucketUtils.DOWNLOADED:
+                    operationBtn.setVisible(true);
                     n_nameLabel.setText("-");
                     n_sizeLabel.setText("-");
                     compressRatioLabel.setText("-");
@@ -87,6 +89,7 @@ public class PreView extends CustomView {
                     operationBtn.setUserData("optimize");
                     break;
                 case BucketUtils.OPTIMIZEED:
+                    operationBtn.setVisible(true);
                     n_nameLabel.setText(optimizeFile.getName());
                     n_sizeLabel.setText(Utils.getSizeName(size));
                     compressRatioLabel.setText(String.format("-%.2f%%",

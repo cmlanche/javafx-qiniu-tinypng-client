@@ -486,6 +486,7 @@ public class ContentView extends CustomView {
                 UploadProcessData data = new UploadProcessData(ProcessData.ERROR);
                 data.setError(message);
                 bucketFile.setProcess(data);
+                tableView.refresh();
             }
         });
     }

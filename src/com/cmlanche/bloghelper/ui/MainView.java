@@ -4,6 +4,7 @@ import com.cmlanche.bloghelper.Main;
 import com.cmlanche.bloghelper.utils.BucketUtils;
 import com.fx.base.mvvm.CustomView;
 import com.sun.javafx.PlatformUtil;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -72,7 +73,11 @@ public class MainView extends CustomView {
             preView.loadFile(bucketFile);
         });
         contentView.setUpdateListener(bucketFile -> {
-            preView.loadFile(bucketFile);
+            if (Platform.isFxApplicationThread()) {
+                preView.loadFile(bucketFile);
+            } else {
+                runOnUiThread(() -> preView.loadFile(bucketFile));
+            }
         });
 
         // 初始化菜单
