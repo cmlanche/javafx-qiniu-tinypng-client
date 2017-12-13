@@ -1,6 +1,6 @@
 package com.cmlanche.bloghelper.ui.rename;
 
-import com.cmlanche.bloghelper.Main;
+import com.cmlanche.bloghelper.App;
 import com.cmlanche.bloghelper.model.BucketFile;
 import com.fx.base.dialog.BaseDialog;
 import com.fx.base.dialog.CloseDialogListener;
@@ -13,12 +13,12 @@ import javafx.stage.Window;
 public class RenameDialog extends BaseDialog {
 
     public RenameDialog(ViewTuple<?, ?> viewTuple) {
-        super(Main.getMainStage(), viewTuple, false);
+        super(App.getMainStage(), viewTuple, false);
     }
 
     @Override
     protected Window getOwner() {
-        return Main.getMainStage();
+        return App.getMainStage();
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.cmlanche.bloghelper.ui;
 
+import com.cmlanche.bloghelper.App;
 import com.cmlanche.bloghelper.common.Config;
 import com.cmlanche.bloghelper.common.Logger;
 import com.cmlanche.bloghelper.downloader.DownloadListener;
@@ -16,6 +17,8 @@ import com.cmlanche.bloghelper.qiniu.QiniuManager;
 import com.cmlanche.bloghelper.tinypng.CompressListener;
 import com.cmlanche.bloghelper.tinypng.TinypngManger;
 import com.cmlanche.bloghelper.ui.alert.AlertDialog;
+import com.cmlanche.bloghelper.ui.optimize.PngOptimzeResponse;
+import com.cmlanche.bloghelper.ui.optimize.PngOptimzeView;
 import com.cmlanche.bloghelper.ui.rename.RenameDialog;
 import com.cmlanche.bloghelper.utils.BucketUtils;
 import com.cmlanche.bloghelper.utils.UIUtils;
@@ -419,34 +422,44 @@ public class ContentView extends CustomView {
      */
     private void optimize(BucketFile bucketFile) {
         if (UIUtils.isPng(bucketFile.getMineType()) || UIUtils.isJpg(bucketFile.getMineType())) {
-            TinypngManger.getInstance().compress(bucketFile, new CompressListener() {
-                @Override
-                public void prepare() {
-                    bucketFile.setProcess(new TinnyCompressProcessData(ProcessData.WAITING));
-                    tableView.refresh();
-                }
+            PngOptimzeView view = new PngOptimzeView(bucketFile);
+            showDialog(App.getMainStage(), view, (flag, data) -> {
+                if (flag == CloseFlag.OK) {
+                    PngOptimzeResponse response = (PngOptimzeResponse) data;
 
-                @Override
-                public void compressing() {
-                    bucketFile.setProcess(new TinnyCompressProcessData(ProcessData.PROCESSING));
-                    tableView.refresh();
-                }
-
-                @Override
-                public void finish() {
-                    bucketFile.setProcess(new TinnyCompressProcessData(ProcessData.FINISH));
-                    tableView.refresh();
-                    if (updateListener != null) {
-                        updateListener.onUpdate(bucketFile);
+                    if (response.isUse()) {
+                        
                     }
-                }
+                    TinypngManger.getInstance().compress(bucketFile, new CompressListener() {
+                        @Override
+                        public void prepare() {
+                            bucketFile.setProcess(new TinnyCompressProcessData(ProcessData.WAITING));
+                            tableView.refresh();
+                        }
 
-                @Override
-                public void error(String message) {
-                    TinnyCompressProcessData data = new TinnyCompressProcessData(ProcessData.ERROR);
-                    data.setError(message);
-                    bucketFile.setProcess(data);
-                    tableView.refresh();
+                        @Override
+                        public void compressing() {
+                            bucketFile.setProcess(new TinnyCompressProcessData(ProcessData.PROCESSING));
+                            tableView.refresh();
+                        }
+
+                        @Override
+                        public void finish() {
+                            bucketFile.setProcess(new TinnyCompressProcessData(ProcessData.FINISH));
+                            tableView.refresh();
+                            if (updateListener != null) {
+                                updateListener.onUpdate(bucketFile);
+                            }
+                        }
+
+                        @Override
+                        public void error(String message) {
+                            TinnyCompressProcessData data = new TinnyCompressProcessData(ProcessData.ERROR);
+                            data.setError(message);
+                            bucketFile.setProcess(data);
+                            tableView.refresh();
+                        }
+                    });
                 }
             });
         }

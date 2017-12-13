@@ -5,5 +5,5 @@ package com.fx.base.dialog;
  */
 public interface CloseDialogListener {
 
-    public void close(int flat, Object data);
+    public void close(int flag, Object data);
 }

@@ -42,6 +42,13 @@ public abstract class BaseView<VM extends ViewModel> extends StackPane implement
     protected abstract void onViewCreated();
 
     /**
+     * 获取标题文本
+     *
+     * @return
+     */
+    public abstract String getTitle();
+
+    /**
      * 承载视图的对话框对象
      * 在onViewCreated之后执行（不需要继承）
      * @param dialog
@@ -67,9 +74,7 @@ public abstract class BaseView<VM extends ViewModel> extends StackPane implement
     }
 
     public void closeDialog(){
-        if(mDialog != null){
-            mDialog.close();
-        }
+        closeDialog(CloseFlag.CANCEL);
     }
 
     public void closeDialog(int flag) {
@@ -78,7 +83,9 @@ public abstract class BaseView<VM extends ViewModel> extends StackPane implement
 
     public void closeDialog(int flag, Object data) {
         setCloseData(flag, data);
-        closeDialog();
+        if (mDialog != null) {
+            mDialog.close();
+        }
     }
 
     public void cancel() {

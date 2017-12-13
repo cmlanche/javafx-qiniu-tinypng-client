@@ -24,8 +24,12 @@ public class AlertView extends CommonDialogLayoutView {
     protected void onViewCreated() {
         super.onViewCreated();
 
-        this.setTitle(title);
         this.contentLabel.setText(content);
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
     }
 
     @Override

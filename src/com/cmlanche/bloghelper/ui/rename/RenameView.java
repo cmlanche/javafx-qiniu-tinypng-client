@@ -26,9 +26,12 @@ public class RenameView extends CommonDialogLayoutView {
     protected void onViewCreated() {
         super.onViewCreated();
         textField.setText(bucketFile.getName());
-        setTitle("重命名");
     }
 
+    @Override
+    public String getTitle() {
+        return "重命名";
+    }
 
     @Override
     protected void onOk() {

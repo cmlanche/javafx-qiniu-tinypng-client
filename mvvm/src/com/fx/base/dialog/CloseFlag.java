@@ -5,6 +5,6 @@ package com.fx.base.dialog;
  */
 public class CloseFlag {
 
-    public static final int OK = 0;
-    public static final int CANCEL = -1;
+    public static final int OK = 1;
+    public static final int CANCEL = 0;
 }

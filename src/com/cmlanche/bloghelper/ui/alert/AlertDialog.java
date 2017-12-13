@@ -1,6 +1,6 @@
 package com.cmlanche.bloghelper.ui.alert;
 
-import com.cmlanche.bloghelper.Main;
+import com.cmlanche.bloghelper.App;
 import com.fx.base.dialog.BaseDialog;
 import com.fx.base.dialog.CloseDialogListener;
 import com.fx.mvvm.ViewTuple;
@@ -17,6 +17,6 @@ public class AlertDialog extends BaseDialog {
 
     public static void show(String title, String content, CloseDialogListener listener) {
         AlertView view = new AlertView(title, content);
-        new AlertDialog(Main.getMainStage(), view.load()).setCloseListener(listener).show();
+        new AlertDialog(App.getMainStage(), view.load()).setCloseListener(listener).show();
     }
 }

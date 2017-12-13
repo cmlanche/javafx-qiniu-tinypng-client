@@ -1,6 +1,6 @@
 package com.cmlanche.bloghelper.ui;
 
-import com.cmlanche.bloghelper.Main;
+import com.cmlanche.bloghelper.App;
 import com.cmlanche.bloghelper.utils.BucketUtils;
 import com.fx.base.mvvm.CustomView;
 import com.sun.javafx.PlatformUtil;
@@ -40,6 +40,11 @@ public class MainView extends CustomView {
     Button optimizeBtn;
     @FXML
     Button uploadBtn;
+
+
+    public MainView() {
+        super();
+    }
 
     @Override
     protected void onViewCreated() {
@@ -132,10 +137,10 @@ public class MainView extends CustomView {
                 case "gif":
                     break;
                 case "aboutBlogHelper":
-                    Main.getHostService().showDocument("http://cmlanche.com/2017/12/03/%E5%9B%BE%E7%89%87%E5%8E%8B%E7%BC%A9(tinypng)+%E4%B8%83%E7%89%9B%E4%BA%91%E5%AD%98%E5%82%A8%E5%AE%A2%E6%88%B7%E7%AB%AF/");
+                    App.getHostService().showDocument("http://cmlanche.com/2017/12/03/%E5%9B%BE%E7%89%87%E5%8E%8B%E7%BC%A9(tinypng)+%E4%B8%83%E7%89%9B%E4%BA%91%E5%AD%98%E5%82%A8%E5%AE%A2%E6%88%B7%E7%AB%AF/");
                     break;
                 case "aboutAnchor":
-                    Main.getHostService().showDocument("http://www.cmlanche.com");
+                    App.getHostService().showDocument("http://www.cmlanche.com");
                     break;
             }
         }

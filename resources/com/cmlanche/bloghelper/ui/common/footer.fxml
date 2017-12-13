@@ -15,7 +15,7 @@
         <HBox spacing="16">
             <Button fx:id="cancel" text="取消">
             </Button>
-            <Button fx:id="ok" text="确定">
+            <Button fx:id="ok" text="确定" defaultButton="true">
             </Button>
         </HBox>
     </right>

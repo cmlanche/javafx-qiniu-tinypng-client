@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 /**
  * Created by cmlanche on 2017/12/3.
  */
-public class Main extends Application {
+public class App extends Application {
 
     private static Stage mainStage;
     private static HostServices hostServices;

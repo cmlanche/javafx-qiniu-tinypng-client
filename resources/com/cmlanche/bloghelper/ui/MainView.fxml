@@ -24,7 +24,7 @@
 
         <!--左侧导航栏-->
         <left>
-            <SiderBarView fx:id="siderBarView">
+            <SiderBarView fx:id="siderBarView" test="ddd">
             </SiderBarView>
         </left>
 

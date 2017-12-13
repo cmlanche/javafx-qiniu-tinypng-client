@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.StackPane?>
-<?import java.net.URL?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
 <StackPane fx:id="root" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.40">
     <stylesheets>
         <URL value="@PngOptimizeView.css"/>
@@ -11,14 +14,25 @@
 
     <VBox spacing="24">
         <StackPane.margin>
-            <Insets left="32" right="32" top="16" bottom="16"/>
+            <Insets left="32" right="32" top="32" bottom="16"/>
         </StackPane.margin>
 
-        <fx:include source="/com/cmlanche/bloghelper/ui/common/header.fxml"/>
+        <GridPane vgap="16" hgap="16">
+            <Label text="宽度：" GridPane.halignment="RIGHT">
+            </Label>
+            <TextField fx:id="widthField" GridPane.columnIndex="1">
+            </TextField>
 
-        <VBox>
-            
-        </VBox>
+            <Label text="高度：" GridPane.rowIndex="1" GridPane.halignment="RIGHT">
+            </Label>
+            <TextField fx:id="heightField" GridPane.rowIndex="1" GridPane.columnIndex="1">
+            </TextField>
+
+            <Label text="预计压缩后大小：" GridPane.rowIndex="2" GridPane.halignment="RIGHT">
+            </Label>
+            <Label fx:id="predictSize" GridPane.rowIndex="2" GridPane.columnIndex="1">
+            </Label>
+        </GridPane>
 
         <fx:include source="/com/cmlanche/bloghelper/ui/common/footer.fxml"/>
     </VBox>

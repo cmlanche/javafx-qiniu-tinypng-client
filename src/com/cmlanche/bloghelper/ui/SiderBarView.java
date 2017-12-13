@@ -4,6 +4,9 @@ import com.cmlanche.bloghelper.listeners.ItemSelectListener;
 import com.cmlanche.bloghelper.qiniu.QiniuManager;
 import com.cmlanche.bloghelper.ui.siderbar.BucketItemView;
 import com.fx.base.mvvm.CustomView;
+import javafx.beans.NamedArg;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -20,7 +23,29 @@ public class SiderBarView extends CustomView {
     @FXML
     ListView<String> listview;
 
+    private StringProperty test;
+
+    public final String getTest() {
+        return testProperty().get();
+    }
+
+    public final StringProperty testProperty() {
+        if (test == null) {
+            test = new SimpleStringProperty();
+        }
+        return test;
+    }
+
+    public final void setTest(String test) {
+        this.testProperty().set(test);
+    }
+
     private ItemSelectListener<String> itemSelectListener;
+
+    public SiderBarView(@NamedArg("test") String test) {
+        super();
+        testProperty().set(test);
+    }
 
     @Override
     protected void onViewCreated() {

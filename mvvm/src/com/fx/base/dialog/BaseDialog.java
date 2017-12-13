@@ -67,14 +67,15 @@ public abstract class BaseDialog{
         mStage.initStyle(StageStyle.DECORATED);
         mStage.setResizable(false);
         viewTuple = createContent();
+        BaseView view = null;
         if(viewTuple.getView() instanceof BaseView){
-            BaseView view = (BaseView) viewTuple.getView();
+            view = (BaseView) viewTuple.getView();
             view.onDialogSet(this);
             root = (Pane) viewTuple.getRoot();
             alignCenter(root.getPrefWidth(), root.getPrefHeight());
             if(isDragable)
                 dragDialogAbleNode(root);
-        }else{
+        } else {
             try {
                 throw new Exception("your view is not a BaseView!");
             } catch (Exception e) {
@@ -84,6 +85,7 @@ public abstract class BaseDialog{
         mScene = new Scene(viewTuple.getRoot());
 //        mScene.getStylesheets().setAll(TestinStage.getInstance().getStylesheet());
         mStage.setScene(mScene);
+        mStage.setTitle(view.getTitle());
         return this;
     }
 
