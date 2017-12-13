@@ -441,6 +441,7 @@ public class ContentView extends CustomView {
                         public void finish() {
                             bucketFile.setProcess(new TinnyCompressProcessData(ProcessData.FINISH));
                             tableView.refresh();
+
                             if (updateListener != null) {
                                 updateListener.onUpdate(bucketFile);
                             }
@@ -482,6 +483,7 @@ public class ContentView extends CustomView {
             @Override
             public void finish() {
                 bucketFile.setProcess(new UploadProcessData(ProcessData.FINISH));
+                QiniuManager.getInstance().updateStat(bucketFile);
                 tableView.refresh();
                 if (updateListener != null) {
                     updateListener.onUpdate(bucketFile);

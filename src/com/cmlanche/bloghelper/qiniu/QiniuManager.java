@@ -4,6 +4,7 @@ import com.cmlanche.bloghelper.common.Config;
 import com.cmlanche.bloghelper.common.Logger;
 import com.cmlanche.bloghelper.listeners.UploadListener;
 import com.cmlanche.bloghelper.model.BucketFile;
+import com.cmlanche.bloghelper.model.ProcessData;
 import com.cmlanche.bloghelper.utils.BucketUtils;
 import com.google.gson.Gson;
 import com.qiniu.common.QiniuException;
@@ -13,6 +14,7 @@ import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
+import com.qiniu.storage.model.FileInfo;
 import com.qiniu.storage.model.FileListing;
 import com.qiniu.util.Auth;
 import org.apache.commons.lang3.StringUtils;
@@ -156,6 +158,29 @@ public class QiniuManager {
             Logger.error(tag, e.getMessage(), e);
         }
         return false;
+    }
+
+    /**
+     * 更新bucket信息
+     *
+     * @param bucketFile
+     */
+    public void updateStat(BucketFile bucketFile) {
+        try {
+            FileInfo fileInfo = bucketManager.stat(bucketFile.getBucket(), bucketFile.getName());
+            if (fileInfo != null) {
+                bucketFile.setName(fileInfo.key);
+                bucketFile.setMineType(fileInfo.mimeType);
+                bucketFile.setSize(fileInfo.fsize);
+                bucketFile.setUpdateTime(fileInfo.putTime / 10000); // 七牛云的文件时间单位为100纳秒
+                bucketFile.setHash(fileInfo.hash);
+                // 计算图像的宽高大小，当文件已经被下载了才去计算
+                bucketFile.setWhSize(BucketUtils.getPictureSize(bucketFile));
+                bucketFile.setProcess(new ProcessData(ProcessData.IDLE));
+            }
+        } catch (QiniuException e) {
+            Logger.error(tag, e.getMessage(), e);
+        }
     }
 
     /**
