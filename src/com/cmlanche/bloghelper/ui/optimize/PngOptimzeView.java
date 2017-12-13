@@ -62,12 +62,12 @@ public class PngOptimzeView extends CommonDialogLayoutView {
                 nh = Integer.parseInt(heightField.getText());
             }
         } else {
-            if (StringUtils.isNoneEmpty(widthField.getText())) {
+            if (StringUtils.isEmpty(widthField.getText())) {
                 nw = -1;
             } else {
                 nw = Integer.parseInt(widthField.getText());
             }
-            if (StringUtils.isNoneEmpty(heightField.getText())) {
+            if (StringUtils.isEmpty(heightField.getText())) {
                 nh = -1;
             } else {
                 nh = Integer.parseInt(heightField.getText());

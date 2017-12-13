@@ -17,7 +17,6 @@ import com.cmlanche.bloghelper.qiniu.QiniuManager;
 import com.cmlanche.bloghelper.tinypng.CompressListener;
 import com.cmlanche.bloghelper.tinypng.TinypngManger;
 import com.cmlanche.bloghelper.ui.alert.AlertDialog;
-import com.cmlanche.bloghelper.ui.optimize.PngOptimzeResponse;
 import com.cmlanche.bloghelper.ui.optimize.PngOptimzeView;
 import com.cmlanche.bloghelper.ui.rename.RenameDialog;
 import com.cmlanche.bloghelper.utils.BucketUtils;
@@ -425,11 +424,6 @@ public class ContentView extends CustomView {
             PngOptimzeView view = new PngOptimzeView(bucketFile);
             showDialog(App.getMainStage(), view, (flag, data) -> {
                 if (flag == CloseFlag.OK) {
-                    PngOptimzeResponse response = (PngOptimzeResponse) data;
-
-                    if (response.isUse()) {
-                        
-                    }
                     TinypngManger.getInstance().compress(bucketFile, new CompressListener() {
                         @Override
                         public void prepare() {
