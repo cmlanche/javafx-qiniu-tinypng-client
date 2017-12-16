@@ -169,7 +169,6 @@ public class QiniuManager {
         try {
             FileInfo fileInfo = bucketManager.stat(bucketFile.getBucket(), bucketFile.getName());
             if (fileInfo != null) {
-                bucketFile.setName(fileInfo.key);
                 bucketFile.setMineType(fileInfo.mimeType);
                 bucketFile.setSize(fileInfo.fsize);
                 bucketFile.setUpdateTime(fileInfo.putTime / 10000); // 七牛云的文件时间单位为100纳秒

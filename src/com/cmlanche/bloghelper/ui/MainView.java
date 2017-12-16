@@ -1,6 +1,7 @@
 package com.cmlanche.bloghelper.ui;
 
 import com.cmlanche.bloghelper.App;
+import com.cmlanche.bloghelper.model.BucketFile;
 import com.cmlanche.bloghelper.utils.BucketUtils;
 import com.fx.base.mvvm.CustomView;
 import com.sun.javafx.PlatformUtil;
@@ -49,39 +50,12 @@ public class MainView extends CustomView {
     @Override
     protected void onViewCreated() {
         siderBarView.setOnItemSelectedListener(contentView::loadBucket);
-        contentView.setOnItemSelectedListener(bucketFile -> {
-            // 设置操作状态
-            int state = BucketUtils.getBucketFileStauts(bucketFile);
-            switch (state) {
-                case BucketUtils.NORMAL:
-                    downloadBtn.setDisable(false);
-                    uploadBtn.setDisable(true);
-                    optimizeBtn.setDisable(true);
-                    break;
-                case BucketUtils.DOWNLOADED:
-                    downloadBtn.setDisable(true);
-                    uploadBtn.setDisable(true);
-                    optimizeBtn.setDisable(false);
-                    break;
-                case BucketUtils.OPTIMIZEED:
-                    downloadBtn.setDisable(true);
-                    uploadBtn.setDisable(false);
-                    optimizeBtn.setDisable(false);
-                    break;
-                case BucketUtils.OPTIMIZED_UPLOADED:
-                    downloadBtn.setDisable(true);
-                    uploadBtn.setDisable(true);
-                    optimizeBtn.setDisable(false);
-                    break;
-            }
-            // 加载预览图
-            preView.loadFile(bucketFile);
-        });
+        contentView.setOnItemSelectedListener(this::updateSelectItem);
         contentView.setUpdateListener(bucketFile -> {
             if (Platform.isFxApplicationThread()) {
-                preView.loadFile(bucketFile);
+                updateSelectItem(bucketFile);
             } else {
-                runOnUiThread(() -> preView.loadFile(bucketFile));
+                runOnUiThread(() -> this.updateSelectItem(bucketFile));
             }
         });
 
@@ -144,5 +118,39 @@ public class MainView extends CustomView {
                     break;
             }
         }
+    }
+
+    /**
+     * 更新一个选择的选项
+     *
+     * @param bucketFile
+     */
+    private void updateSelectItem(BucketFile bucketFile) {
+        // 设置操作状态
+        int state = BucketUtils.getBucketFileStauts(bucketFile);
+        switch (state) {
+            case BucketUtils.NORMAL:
+                downloadBtn.setDisable(false);
+                uploadBtn.setDisable(true);
+                optimizeBtn.setDisable(true);
+                break;
+            case BucketUtils.DOWNLOADED:
+                downloadBtn.setDisable(true);
+                uploadBtn.setDisable(true);
+                optimizeBtn.setDisable(false);
+                break;
+            case BucketUtils.OPTIMIZEED:
+                downloadBtn.setDisable(true);
+                uploadBtn.setDisable(false);
+                optimizeBtn.setDisable(false);
+                break;
+            case BucketUtils.OPTIMIZED_UPLOADED:
+                downloadBtn.setDisable(true);
+                uploadBtn.setDisable(true);
+                optimizeBtn.setDisable(false);
+                break;
+        }
+        // 加载预览图
+        preView.loadFile(bucketFile);
     }
 }
