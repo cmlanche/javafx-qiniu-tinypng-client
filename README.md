@@ -7,5 +7,5 @@ javafx七牛云图片压缩上传客户端
 qiniu.accesskey=your access key
 qiniu.secretkey=your secret key
 ```
-2. 注册tinypng(https://tinypng.com/)，然后把获取到的token填入到config的tinypng.token中
+2. 注册tinypng(tinypng.com)，然后把获取到的token填入到config的tinypng.token中
 ```tinypng.token=your tiny token```
