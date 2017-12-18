@@ -9,3 +9,5 @@ qiniu.secretkey=your secret key
 ```
 2. 注册tinypng(tinypng.com)，然后把获取到的token填入到config的tinypng.token中
 ```tinypng.token=your tiny token```
+
+3. 运行App.java
