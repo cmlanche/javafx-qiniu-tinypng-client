@@ -23,6 +23,7 @@ import com.fx.mvvm.internal.ContextImpl;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableBooleanValue;
+import javafx.beans.value.WeakChangeListener;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.util.Callback;
@@ -148,7 +149,9 @@ public class FxmlViewLoader {
             final ViewType loadedController = loader.getController();
             final Parent loadedRoot = loader.getRoot();
 
-            viewInSceneProperty.bind(loadedRoot.sceneProperty().isNotNull());
+            loadedRoot.sceneProperty().isNotNull().addListener(new WeakChangeListener<>((observable, oldValue, newValue) -> {
+                viewInSceneProperty.setValue(newValue);
+            }));
 
             if (loadedController == null) {
                 throw new IOException("Could not load the controller for the View " + resource

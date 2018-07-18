@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import javafx.beans.value.WeakChangeListener;
 
 /**
  * This class encapsulates reflection related utility operations specific for
@@ -418,14 +419,14 @@ public class ViewLoaderReflectionUtils {
 
                 PreventGarbageCollectionStore.getInstance().put(viewInSceneProperty);
 
-                viewInSceneProperty.addListener((observable, oldValue, newValue) -> {
+                viewInSceneProperty.addListener(new WeakChangeListener<>((observable, oldValue, newValue) -> {
 					if(newValue) {
 						lifecycleViewModel.onViewAdded();
 					} else {
 						lifecycleViewModel.onViewRemoved();
                         PreventGarbageCollectionStore.getInstance().remove(viewInSceneProperty);
 					}
-				});
+				}));
             }
         }
     }
